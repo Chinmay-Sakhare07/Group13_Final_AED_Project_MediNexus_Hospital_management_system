@@ -29,19 +29,19 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        fieldPatient = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        fieldDiagnosis = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        ComboBoxSpecialityRequires = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        comboBoxPreferredSpec = new javax.swing.JComboBox<>();
+        comboBoxPreferredSpec2 = new javax.swing.JComboBox<>();
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel9 = new javax.swing.JLabel();
         jCheckBox2 = new javax.swing.JCheckBox();
@@ -49,16 +49,16 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         jCheckBox4 = new javax.swing.JCheckBox();
         jLabel10 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtAreaReferral = new javax.swing.JTextArea();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        txtAreaClinicalSummanry = new javax.swing.JTextArea();
         jLabel12 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btmChooseFiles = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnSelected = new javax.swing.JButton();
+        btnSubmitReferal = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(232, 244, 248));
 
@@ -71,9 +71,9 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(232, 244, 248));
         jLabel2.setText("Refer to Specialist");
 
-        jButton1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(13, 115, 119));
-        jButton1.setText("BACK");
+        btnBack.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(13, 115, 119));
+        btnBack.setText("BACK");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -85,7 +85,7 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnBack)
                 .addGap(64, 64, 64))
         );
         jPanel3Layout.setVerticalGroup(
@@ -95,7 +95,7 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jButton1))
+                    .addComponent(btnBack))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -124,11 +124,11 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                         .addGap(6, 6, 6)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fieldPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(133, 133, 133)
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(fieldDiagnosis, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel7))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -140,9 +140,9 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldPatient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fieldDiagnosis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -154,21 +154,21 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         jLabel6.setForeground(new java.awt.Color(13, 115, 119));
         jLabel6.setText("SPECIALITY REQUIRED");
 
-        jComboBox1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jComboBox1.setForeground(new java.awt.Color(13, 115, 119));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cardiology (Heart & Cardiovascular)", "Pulmonology (Lungs & Respiratory)", "Neurology (Brain & Nervous System)", "Orthopedics (Bones & Joints)", "Gastroenterology (Digestive System)", "Endocrinology (Hormones & Metabolism)", "Nephrology (Kidneys)", "Oncology (Cancer)", "Dermatology (Skin)", "Psychiatry (Mental Health)", "General Surgery", "Cardiothoracic Surgery", "Neurosurgery", "Orthopedic Surgery", "Plastic Surgery", "Ophthalmology (Eyes)", "ENT (Ear, Nose, Throat)", "Urology (Urinary System)", "Gynecology (Women's Health)", "Pediatrics (Children)", "Geriatrics (Elderly)", "Rheumatology (Autoimmune & Joint disorders)", "Hematology (Blood disorders)", "Infectious Disease", "Emergency Medicine", "Anesthesiology", "Radiology", "Pathology" }));
+        ComboBoxSpecialityRequires.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        ComboBoxSpecialityRequires.setForeground(new java.awt.Color(13, 115, 119));
+        ComboBoxSpecialityRequires.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cardiology (Heart & Cardiovascular)", "Pulmonology (Lungs & Respiratory)", "Neurology (Brain & Nervous System)", "Orthopedics (Bones & Joints)", "Gastroenterology (Digestive System)", "Endocrinology (Hormones & Metabolism)", "Nephrology (Kidneys)", "Oncology (Cancer)", "Dermatology (Skin)", "Psychiatry (Mental Health)", "General Surgery", "Cardiothoracic Surgery", "Neurosurgery", "Orthopedic Surgery", "Plastic Surgery", "Ophthalmology (Eyes)", "ENT (Ear, Nose, Throat)", "Urology (Urinary System)", "Gynecology (Women's Health)", "Pediatrics (Children)", "Geriatrics (Elderly)", "Rheumatology (Autoimmune & Joint disorders)", "Hematology (Blood disorders)", "Infectious Disease", "Emergency Medicine", "Anesthesiology", "Radiology", "Pathology" }));
 
         jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(13, 115, 119));
         jLabel8.setText("PREFERRED SPECIALITY");
 
-        jComboBox2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jComboBox2.setForeground(new java.awt.Color(13, 115, 119));
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxPreferredSpec.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        comboBoxPreferredSpec.setForeground(new java.awt.Color(13, 115, 119));
+        comboBoxPreferredSpec.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jComboBox3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jComboBox3.setForeground(new java.awt.Color(13, 115, 119));
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxPreferredSpec2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        comboBoxPreferredSpec2.setForeground(new java.awt.Color(13, 115, 119));
+        comboBoxPreferredSpec2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jCheckBox1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jCheckBox1.setForeground(new java.awt.Color(13, 115, 119));
@@ -199,46 +199,46 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         jLabel10.setForeground(new java.awt.Color(13, 115, 119));
         jLabel10.setText("REASON FOR REFERRAL");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setForeground(new java.awt.Color(13, 115, 119));
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtAreaReferral.setColumns(20);
+        txtAreaReferral.setForeground(new java.awt.Color(13, 115, 119));
+        txtAreaReferral.setRows(5);
+        jScrollPane1.setViewportView(txtAreaReferral);
 
         jLabel11.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(13, 115, 119));
         jLabel11.setText("CLINICAL SUMMARY FOR SPECIALIST ");
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setForeground(new java.awt.Color(13, 115, 119));
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        txtAreaClinicalSummanry.setColumns(20);
+        txtAreaClinicalSummanry.setForeground(new java.awt.Color(13, 115, 119));
+        txtAreaClinicalSummanry.setRows(5);
+        jScrollPane2.setViewportView(txtAreaClinicalSummanry);
 
         jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(13, 115, 119));
         jLabel12.setText("ATTACH DOCUMENTS");
 
-        jButton2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(13, 115, 119));
-        jButton2.setText("CHOOSE FILES");
+        btmChooseFiles.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        btmChooseFiles.setForeground(new java.awt.Color(13, 115, 119));
+        btmChooseFiles.setText("CHOOSE FILES");
 
         jLabel13.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(13, 115, 119));
         jLabel13.setText("SELECTED");
 
-        jButton4.setBackground(new java.awt.Color(13, 115, 119));
-        jButton4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(232, 244, 248));
-        jButton4.setText("SUBMIT REFERRAL");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnSubmitReferal.setBackground(new java.awt.Color(13, 115, 119));
+        btnSubmitReferal.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        btnSubmitReferal.setForeground(new java.awt.Color(232, 244, 248));
+        btnSubmitReferal.setText("SUBMIT REFERRAL");
+        btnSubmitReferal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnSubmitReferalActionPerformed(evt);
             }
         });
 
-        jButton5.setBackground(new java.awt.Color(13, 115, 119));
-        jButton5.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(232, 244, 248));
-        jButton5.setText("CANCEL");
+        btnCancel.setBackground(new java.awt.Color(13, 115, 119));
+        btnCancel.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        btnCancel.setForeground(new java.awt.Color(232, 244, 248));
+        btnCancel.setText("CANCEL");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -261,11 +261,11 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                                     .addComponent(jLabel6))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ComboBoxSpecialityRequires, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(comboBoxPreferredSpec, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(35, 35, 35)
-                                        .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addComponent(comboBoxPreferredSpec2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGap(48, 48, 48)
                                 .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
@@ -284,16 +284,16 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel12)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2)
+                                .addComponent(btmChooseFiles)
                                 .addGap(85, 85, 85)
                                 .addComponent(jLabel13)
                                 .addGap(26, 26, 26)
-                                .addComponent(jButton3))
+                                .addComponent(btnSelected))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(178, 178, 178)
-                                .addComponent(jButton4)
+                                .addComponent(btnSubmitReferal)
                                 .addGap(67, 67, 67)
-                                .addComponent(jButton5)))
+                                .addComponent(btnCancel)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -307,12 +307,12 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ComboBoxSpecialityRequires, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboBoxPreferredSpec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboBoxPreferredSpec2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCheckBox1))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -331,13 +331,13 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jButton2)
+                    .addComponent(btmChooseFiles)
                     .addComponent(jLabel13)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(btnSubmitReferal)
+                    .addComponent(btnCancel))
                 .addGap(28, 28, 28))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -346,24 +346,26 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnSubmitReferalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitReferalActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnSubmitReferalActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JComboBox<String> ComboBoxSpecialityRequires;
+    private javax.swing.JButton btmChooseFiles;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnSelected;
+    private javax.swing.JButton btnSubmitReferal;
+    private javax.swing.JComboBox<String> comboBoxPreferredSpec;
+    private javax.swing.JComboBox<String> comboBoxPreferredSpec2;
+    private javax.swing.JTextField fieldDiagnosis;
+    private javax.swing.JTextField fieldPatient;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -381,9 +383,7 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextArea txtAreaClinicalSummanry;
+    private javax.swing.JTextArea txtAreaReferral;
     // End of variables declaration//GEN-END:variables
 }
