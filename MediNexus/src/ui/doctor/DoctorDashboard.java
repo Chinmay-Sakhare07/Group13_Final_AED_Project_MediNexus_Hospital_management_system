@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui;
+package ui.doctor;
 
 /**
  *
@@ -30,23 +30,23 @@ public class DoctorDashboard extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        fieldPending = new javax.swing.JTextField();
+        fieldInProgress = new javax.swing.JTextField();
+        fieldCompleted = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblDoctorDashboard = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnViewAllComplaints = new javax.swing.JButton();
+        lblCreateAssesment = new javax.swing.JButton();
+        btnReferSpecialist = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        fieldRecentNotifications1 = new javax.swing.JTextField();
+        fieldRecentNotifications2 = new javax.swing.JTextField();
 
         jPanel1.setBackground(new java.awt.Color(232, 244, 248));
 
@@ -54,14 +54,14 @@ public class DoctorDashboard extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(232, 244, 248));
-        jLabel1.setText("MEDIRESOLVE");
+        jLabel1.setText("MEDINEXUS");
 
         jLabel2.setForeground(new java.awt.Color(232, 244, 248));
         jLabel2.setText("Doctor Portal");
 
-        jButton1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(13, 115, 119));
-        jButton1.setText("BACK");
+        btnBack.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(13, 115, 119));
+        btnBack.setText("BACK");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -73,7 +73,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnBack)
                 .addGap(64, 64, 64))
         );
         jPanel3Layout.setVerticalGroup(
@@ -83,7 +83,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jButton1))
+                    .addComponent(btnBack))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -103,8 +103,8 @@ public class DoctorDashboard extends javax.swing.JPanel {
         jLabel6.setForeground(new java.awt.Color(13, 115, 119));
         jLabel6.setText("COMPLETED");
 
-        jTable1.setBackground(new java.awt.Color(13, 115, 119));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDoctorDashboard.setBackground(new java.awt.Color(13, 115, 119));
+        tblDoctorDashboard.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -117,29 +117,29 @@ public class DoctorDashboard extends javax.swing.JPanel {
                 "ID", "PATIENT", "CATEGORY", "PRIORITY", "STATUS", "DATE"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblDoctorDashboard);
 
         jLabel7.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(13, 115, 119));
         jLabel7.setText("DASHBOARD SUMMARY");
 
-        jButton2.setBackground(new java.awt.Color(13, 115, 119));
-        jButton2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(232, 244, 248));
-        jButton2.setText("VIEW ALL COMPLAINTS");
+        btnViewAllComplaints.setBackground(new java.awt.Color(13, 115, 119));
+        btnViewAllComplaints.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        btnViewAllComplaints.setForeground(new java.awt.Color(232, 244, 248));
+        btnViewAllComplaints.setText("VIEW ALL COMPLAINTS");
 
-        jButton3.setBackground(new java.awt.Color(13, 115, 119));
-        jButton3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(232, 244, 248));
-        jButton3.setText("CREATE ASSESMENT");
+        lblCreateAssesment.setBackground(new java.awt.Color(13, 115, 119));
+        lblCreateAssesment.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        lblCreateAssesment.setForeground(new java.awt.Color(232, 244, 248));
+        lblCreateAssesment.setText("CREATE ASSESMENT");
 
-        jButton4.setBackground(new java.awt.Color(13, 115, 119));
-        jButton4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(232, 244, 248));
-        jButton4.setText("REFER SPECIALIST");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnReferSpecialist.setBackground(new java.awt.Color(13, 115, 119));
+        btnReferSpecialist.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        btnReferSpecialist.setForeground(new java.awt.Color(232, 244, 248));
+        btnReferSpecialist.setText("REFER SPECIALIST");
+        btnReferSpecialist.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnReferSpecialistActionPerformed(evt);
             }
         });
 
@@ -156,15 +156,15 @@ public class DoctorDashboard extends javax.swing.JPanel {
                 .addGap(107, 107, 107)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fieldPending, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(154, 154, 154)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fieldInProgress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fieldCompleted, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(145, 145, 145))
             .addComponent(jScrollPane1)
             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -177,11 +177,11 @@ public class DoctorDashboard extends javax.swing.JPanel {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(63, 63, 63)
-                        .addComponent(jButton2)
+                        .addComponent(btnViewAllComplaints)
                         .addGap(78, 78, 78)
-                        .addComponent(jButton3)
+                        .addComponent(lblCreateAssesment)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
-                        .addComponent(jButton4)
+                        .addComponent(btnReferSpecialist)
                         .addGap(118, 118, 118))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -189,8 +189,8 @@ public class DoctorDashboard extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jTextField4)
-                    .addComponent(jTextField5))
+                    .addComponent(fieldRecentNotifications1)
+                    .addComponent(fieldRecentNotifications2))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -206,24 +206,24 @@ public class DoctorDashboard extends javax.swing.JPanel {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fieldPending, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldInProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldCompleted, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btnViewAllComplaints)
+                    .addComponent(lblCreateAssesment)
+                    .addComponent(btnReferSpecialist))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fieldRecentNotifications1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fieldRecentNotifications2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
@@ -239,16 +239,20 @@ public class DoctorDashboard extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnReferSpecialistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReferSpecialistActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnReferSpecialistActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnReferSpecialist;
+    private javax.swing.JButton btnViewAllComplaints;
+    private javax.swing.JTextField fieldCompleted;
+    private javax.swing.JTextField fieldInProgress;
+    private javax.swing.JTextField fieldPending;
+    private javax.swing.JTextField fieldRecentNotifications1;
+    private javax.swing.JTextField fieldRecentNotifications2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -260,11 +264,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JButton lblCreateAssesment;
+    private javax.swing.JTable tblDoctorDashboard;
     // End of variables declaration//GEN-END:variables
 }

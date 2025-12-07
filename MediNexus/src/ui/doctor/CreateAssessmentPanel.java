@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui;
+package ui.doctor;
 
 /**
  *
@@ -30,39 +30,39 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        lblComplaintID = new javax.swing.JLabel();
+        fieldComplaintID = new javax.swing.JTextField();
+        lblPatient = new javax.swing.JLabel();
+        fieldPatient = new javax.swing.JTextField();
+        lblAge = new javax.swing.JLabel();
+        fieldAge = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        fieldChiefComplaint = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jCheckBox6 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
-        jCheckBox9 = new javax.swing.JCheckBox();
-        jCheckBox10 = new javax.swing.JCheckBox();
-        jCheckBox11 = new javax.swing.JCheckBox();
-        jCheckBox12 = new javax.swing.JCheckBox();
+        cbFever = new javax.swing.JCheckBox();
+        cbCough = new javax.swing.JCheckBox();
+        cbHeadache = new javax.swing.JCheckBox();
+        cbFatigue = new javax.swing.JCheckBox();
+        cbNausea = new javax.swing.JCheckBox();
+        cbChestpain = new javax.swing.JCheckBox();
+        cbShortBreath = new javax.swing.JCheckBox();
+        cbDizziness = new javax.swing.JCheckBox();
+        cbAbdominalPain = new javax.swing.JCheckBox();
+        cbSweatong = new javax.swing.JCheckBox();
+        cbVommiting = new javax.swing.JCheckBox();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        fieldPhysicalExamination = new javax.swing.JTextArea();
         jLabel10 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        fieldPreliminaryNotes = new javax.swing.JTextArea();
+        btnSveAssessment = new javax.swing.JButton();
+        btnCrteDiagnosos = new javax.swing.JButton();
+        btnChange = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(232, 244, 248));
 
@@ -70,14 +70,14 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(232, 244, 248));
-        jLabel1.setText("MEDIRESOLVE");
+        jLabel1.setText("MEDINEXUS");
 
         jLabel2.setForeground(new java.awt.Color(232, 244, 248));
         jLabel2.setText("Create Assesments");
 
-        jButton1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(13, 115, 119));
-        jButton1.setText("BACK");
+        btnBack.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(13, 115, 119));
+        btnBack.setText("BACK");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -89,7 +89,7 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnBack)
                 .addGap(64, 64, 64))
         );
         jPanel3Layout.setVerticalGroup(
@@ -99,30 +99,30 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jButton1))
+                    .addComponent(btnBack))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(13, 115, 119));
-        jLabel3.setText("Complaint ID");
+        lblComplaintID.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        lblComplaintID.setForeground(new java.awt.Color(13, 115, 119));
+        lblComplaintID.setText("Complaint ID");
 
-        jTextField1.setBackground(new java.awt.Color(232, 244, 248));
+        fieldComplaintID.setBackground(new java.awt.Color(232, 244, 248));
 
-        jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(13, 115, 119));
-        jLabel4.setText("Patient");
+        lblPatient.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        lblPatient.setForeground(new java.awt.Color(13, 115, 119));
+        lblPatient.setText("Patient");
 
-        jTextField2.setEditable(false);
-        jTextField2.setBackground(new java.awt.Color(232, 244, 248));
+        fieldPatient.setEditable(false);
+        fieldPatient.setBackground(new java.awt.Color(232, 244, 248));
 
-        jLabel5.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(13, 115, 119));
-        jLabel5.setText("Age");
+        lblAge.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        lblAge.setForeground(new java.awt.Color(13, 115, 119));
+        lblAge.setText("Age");
 
-        jTextField3.setBackground(new java.awt.Color(232, 244, 248));
+        fieldAge.setBackground(new java.awt.Color(232, 244, 248));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -130,17 +130,17 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jLabel3)
+                .addComponent(lblComplaintID)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fieldComplaintID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(127, 127, 127)
-                .addComponent(jLabel4)
+                .addComponent(lblPatient)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fieldPatient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(114, 114, 114)
-                .addComponent(jLabel5)
+                .addComponent(lblAge)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fieldAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -148,12 +148,12 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblComplaintID)
+                    .addComponent(fieldComplaintID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPatient)
+                    .addComponent(fieldPatient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAge)
+                    .addComponent(fieldAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -171,75 +171,75 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
         jLabel8.setForeground(new java.awt.Color(13, 115, 119));
         jLabel8.setText("CHIEF COMPLAINT");
 
-        jCheckBox1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox1.setForeground(new java.awt.Color(13, 115, 119));
-        jCheckBox1.setText("FEVER");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        cbFever.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        cbFever.setForeground(new java.awt.Color(13, 115, 119));
+        cbFever.setText("FEVER");
+        cbFever.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                cbFeverActionPerformed(evt);
             }
         });
 
-        jCheckBox2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox2.setForeground(new java.awt.Color(13, 115, 119));
-        jCheckBox2.setText("COUGH");
+        cbCough.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        cbCough.setForeground(new java.awt.Color(13, 115, 119));
+        cbCough.setText("COUGH");
 
-        jCheckBox3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox3.setForeground(new java.awt.Color(13, 115, 119));
-        jCheckBox3.setText("HEADACHE");
+        cbHeadache.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        cbHeadache.setForeground(new java.awt.Color(13, 115, 119));
+        cbHeadache.setText("HEADACHE");
 
-        jCheckBox4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox4.setForeground(new java.awt.Color(13, 115, 119));
-        jCheckBox4.setText("FATIGUE");
+        cbFatigue.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        cbFatigue.setForeground(new java.awt.Color(13, 115, 119));
+        cbFatigue.setText("FATIGUE");
 
-        jCheckBox5.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox5.setForeground(new java.awt.Color(13, 115, 119));
-        jCheckBox5.setText("NAUSEA");
+        cbNausea.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        cbNausea.setForeground(new java.awt.Color(13, 115, 119));
+        cbNausea.setText("NAUSEA");
 
-        jCheckBox6.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox6.setForeground(new java.awt.Color(13, 115, 119));
-        jCheckBox6.setText("CHEST PAIN");
+        cbChestpain.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        cbChestpain.setForeground(new java.awt.Color(13, 115, 119));
+        cbChestpain.setText("CHEST PAIN");
 
-        jCheckBox7.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox7.setForeground(new java.awt.Color(13, 115, 119));
-        jCheckBox7.setText("SHORTNESS OF BREATH");
-        jCheckBox7.addActionListener(new java.awt.event.ActionListener() {
+        cbShortBreath.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        cbShortBreath.setForeground(new java.awt.Color(13, 115, 119));
+        cbShortBreath.setText("SHORTNESS OF BREATH");
+        cbShortBreath.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox7ActionPerformed(evt);
+                cbShortBreathActionPerformed(evt);
             }
         });
 
-        jCheckBox9.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox9.setForeground(new java.awt.Color(13, 115, 119));
-        jCheckBox9.setText("DIZZINESS");
+        cbDizziness.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        cbDizziness.setForeground(new java.awt.Color(13, 115, 119));
+        cbDizziness.setText("DIZZINESS");
 
-        jCheckBox10.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox10.setForeground(new java.awt.Color(13, 115, 119));
-        jCheckBox10.setText("ABDOMINAL PAIN");
+        cbAbdominalPain.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        cbAbdominalPain.setForeground(new java.awt.Color(13, 115, 119));
+        cbAbdominalPain.setText("ABDOMINAL PAIN");
 
-        jCheckBox11.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox11.setForeground(new java.awt.Color(13, 115, 119));
-        jCheckBox11.setText("SWEATING");
+        cbSweatong.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        cbSweatong.setForeground(new java.awt.Color(13, 115, 119));
+        cbSweatong.setText("SWEATING");
 
-        jCheckBox12.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox12.setForeground(new java.awt.Color(13, 115, 119));
-        jCheckBox12.setText("VOMITTING");
+        cbVommiting.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        cbVommiting.setForeground(new java.awt.Color(13, 115, 119));
+        cbVommiting.setText("VOMITTING");
 
         jLabel9.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(13, 115, 119));
         jLabel9.setText("PHYSICAL EXAMINATION ");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        fieldPhysicalExamination.setColumns(20);
+        fieldPhysicalExamination.setRows(5);
+        jScrollPane1.setViewportView(fieldPhysicalExamination);
 
         jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(13, 115, 119));
         jLabel10.setText("PRELIMINARY NOTES");
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        fieldPreliminaryNotes.setColumns(20);
+        fieldPreliminaryNotes.setRows(5);
+        jScrollPane2.setViewportView(fieldPreliminaryNotes);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -253,35 +253,35 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
                         .addGap(6, 6, 6)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel10)
-                            .addComponent(jTextField4)
+                            .addComponent(fieldChiefComplaint)
                             .addComponent(jLabel8)
                             .addComponent(jLabel6)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jCheckBox1)
+                                        .addComponent(cbFever)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jCheckBox2))
-                                    .addComponent(jCheckBox9)
+                                        .addComponent(cbCough))
+                                    .addComponent(cbDizziness)
                                     .addComponent(jLabel9))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jCheckBox3)
+                                        .addComponent(cbHeadache)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jCheckBox4))
-                                    .addComponent(jCheckBox10))
+                                        .addComponent(cbFatigue))
+                                    .addComponent(cbAbdominalPain))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addComponent(jCheckBox5)
+                                        .addComponent(cbNausea)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jCheckBox6))
-                                    .addComponent(jCheckBox11))
+                                        .addComponent(cbChestpain))
+                                    .addComponent(cbSweatong))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jCheckBox12)
-                                    .addComponent(jCheckBox7)))
+                                    .addComponent(cbVommiting)
+                                    .addComponent(cbShortBreath)))
                             .addComponent(jScrollPane1)
                             .addComponent(jScrollPane2))))
                 .addContainerGap(16, Short.MAX_VALUE))
@@ -294,24 +294,24 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(fieldChiefComplaint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox3)
-                    .addComponent(jCheckBox4)
-                    .addComponent(jCheckBox5)
-                    .addComponent(jCheckBox6)
-                    .addComponent(jCheckBox7))
+                    .addComponent(cbFever)
+                    .addComponent(cbCough)
+                    .addComponent(cbHeadache)
+                    .addComponent(cbFatigue)
+                    .addComponent(cbNausea)
+                    .addComponent(cbChestpain)
+                    .addComponent(cbShortBreath))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox9)
-                    .addComponent(jCheckBox10)
-                    .addComponent(jCheckBox11)
-                    .addComponent(jCheckBox12))
+                    .addComponent(cbDizziness)
+                    .addComponent(cbAbdominalPain)
+                    .addComponent(cbSweatong)
+                    .addComponent(cbVommiting))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -323,25 +323,25 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        jButton2.setBackground(new java.awt.Color(13, 115, 119));
-        jButton2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(232, 244, 248));
-        jButton2.setText("SAVE ASSESMENT");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnSveAssessment.setBackground(new java.awt.Color(13, 115, 119));
+        btnSveAssessment.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        btnSveAssessment.setForeground(new java.awt.Color(232, 244, 248));
+        btnSveAssessment.setText("SAVE ASSESMENT");
+        btnSveAssessment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnSveAssessmentActionPerformed(evt);
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(13, 115, 119));
-        jButton3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(232, 244, 248));
-        jButton3.setText("CREATE DIAGNOSIS");
+        btnCrteDiagnosos.setBackground(new java.awt.Color(13, 115, 119));
+        btnCrteDiagnosos.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        btnCrteDiagnosos.setForeground(new java.awt.Color(232, 244, 248));
+        btnCrteDiagnosos.setText("CREATE DIAGNOSIS");
 
-        jButton4.setBackground(new java.awt.Color(13, 115, 119));
-        jButton4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(232, 244, 248));
-        jButton4.setText("CANCEL");
+        btnChange.setBackground(new java.awt.Color(13, 115, 119));
+        btnChange.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        btnChange.setForeground(new java.awt.Color(232, 244, 248));
+        btnChange.setText("CANCEL");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -352,11 +352,11 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(99, 99, 99)
-                .addComponent(jButton2)
+                .addComponent(btnSveAssessment)
                 .addGap(84, 84, 84)
-                .addComponent(jButton3)
+                .addComponent(btnCrteDiagnosos)
                 .addGap(84, 84, 84)
-                .addComponent(jButton4)
+                .addComponent(btnChange)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -369,9 +369,9 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btnSveAssessment)
+                    .addComponent(btnCrteDiagnosos)
+                    .addComponent(btnChange))
                 .addGap(0, 11, Short.MAX_VALUE))
         );
 
@@ -387,41 +387,44 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+    private void cbFeverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFeverActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    }//GEN-LAST:event_cbFeverActionPerformed
 
-    private void jCheckBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox7ActionPerformed
+    private void cbShortBreathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbShortBreathActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox7ActionPerformed
+    }//GEN-LAST:event_cbShortBreathActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnSveAssessmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSveAssessmentActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnSveAssessmentActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox10;
-    private javax.swing.JCheckBox jCheckBox11;
-    private javax.swing.JCheckBox jCheckBox12;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
-    private javax.swing.JCheckBox jCheckBox9;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnChange;
+    private javax.swing.JButton btnCrteDiagnosos;
+    private javax.swing.JButton btnSveAssessment;
+    private javax.swing.JCheckBox cbAbdominalPain;
+    private javax.swing.JCheckBox cbChestpain;
+    private javax.swing.JCheckBox cbCough;
+    private javax.swing.JCheckBox cbDizziness;
+    private javax.swing.JCheckBox cbFatigue;
+    private javax.swing.JCheckBox cbFever;
+    private javax.swing.JCheckBox cbHeadache;
+    private javax.swing.JCheckBox cbNausea;
+    private javax.swing.JCheckBox cbShortBreath;
+    private javax.swing.JCheckBox cbSweatong;
+    private javax.swing.JCheckBox cbVommiting;
+    private javax.swing.JTextField fieldAge;
+    private javax.swing.JTextField fieldChiefComplaint;
+    private javax.swing.JTextField fieldComplaintID;
+    private javax.swing.JTextField fieldPatient;
+    private javax.swing.JTextArea fieldPhysicalExamination;
+    private javax.swing.JTextArea fieldPreliminaryNotes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -432,11 +435,8 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel lblAge;
+    private javax.swing.JLabel lblComplaintID;
+    private javax.swing.JLabel lblPatient;
     // End of variables declaration//GEN-END:variables
 }
