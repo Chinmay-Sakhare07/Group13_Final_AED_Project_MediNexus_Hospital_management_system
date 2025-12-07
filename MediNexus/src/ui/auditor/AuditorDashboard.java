@@ -4,6 +4,14 @@
  */
 package ui.auditor;
 
+import dao.*;
+import model.*;
+import session.UserSession;
+import util.DateUtil;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author anishagaikar
@@ -13,8 +21,171 @@ public class AuditorDashboard extends javax.swing.JPanel {
     /**
      * Creates new form AuditorDashboard
      */
+    private AuditLogDAO auditLogDAO;
+    private UserDAO userDAO;
+    private ComplaintDAO complaintDAO;
+    private DefaultTableModel tableModel;
+
     public AuditorDashboard() {
         initComponents();
+        this.auditLogDAO = new AuditLogDAO();
+        this.userDAO = new UserDAO();
+        this.complaintDAO = new ComplaintDAO();
+
+        // Get table model
+        this.tableModel = (DefaultTableModel) jTableRecentLogs.getModel();
+
+        // Setup and load data
+        setupTableColumns();
+        loadDashboardData();
+    }
+
+    // Setup table columns for audit logs
+    private void setupTableColumns() {
+        tableModel.setColumnCount(0);
+        tableModel.addColumn("Time");
+        tableModel.addColumn("User");
+        tableModel.addColumn("Action");
+        tableModel.addColumn("Entity");
+        tableModel.addColumn("Status");
+        tableModel.addColumn("IP Address");
+    }
+
+    // Load all dashboard data
+    private void loadDashboardData() {
+        loadSystemStatistics();
+        loadRecentAuditLogs();
+        loadComplianceAlerts();
+    }
+
+    // Load system activity statistics
+    private void loadSystemStatistics() {
+        try {
+            // Get all audit logs from database
+            List<AuditLog> allLogs = auditLogDAO.getAllAuditLogs();
+
+            // Initialize counters for last 24 hours
+            int totalLogins = 0;
+            int failedAttempts = 0;
+            int dataAccessEvents = 0;
+            int modifications = 0;
+            int complianceViolations = 0;
+
+            // Count different types of actions
+            for (AuditLog log : allLogs) {
+                if (DateUtil.isWithinLastHours(log.getTimestamp(), 24)) {
+                    if (log.getAction().equals("LOGIN")) {
+                        totalLogins++;
+                    } else if (log.getAction().equals("FAILED_LOGIN")) {
+                        failedAttempts++;
+                    } else if (log.getAction().equals("VIEW") || log.getAction().equals("READ")) {
+                        dataAccessEvents++;
+                    } else if (log.getAction().equals("CREATE") || log.getAction().equals("UPDATE") || log.getAction().equals("DELETE")) {
+                        modifications++;
+                    }
+                }
+            }
+
+            // Update UI labels with counts
+            jLabelTotalLogins.setText(String.valueOf(totalLogins));
+            jTextField1.setText(String.valueOf(failedAttempts));
+            jTextField2.setText(String.valueOf(dataAccessEvents));
+            jTextField3.setText(String.valueOf(modifications));
+            jTextField4.setText(String.valueOf(complianceViolations));
+
+            // Update audit summary counts
+            jLabelActiveCount.setText("5");
+            jLabelCompletedCount.setText("42");
+            jLabelIssuesCount.setText(String.valueOf(complianceViolations));
+
+        } catch (Exception e) {
+            System.err.println("Error loading statistics: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Load recent audit logs into table
+    private void loadRecentAuditLogs() {
+        try {
+            // Clear existing table rows
+            tableModel.setRowCount(0);
+
+            // Get last 20 audit logs
+            List<AuditLog> recentLogs = auditLogDAO.getRecentAuditLogs(20);
+
+            // Add each log to table
+            for (AuditLog log : recentLogs) {
+                // Get username for this log
+                User user = userDAO.getUserByID(log.getUserID());
+                String username = user != null ? user.getUsername() : "Unknown";
+
+                // Format timestamp as relative time
+                String timeStr = DateUtil.getRelativeTime(log.getTimestamp());
+
+                // Determine status based on action
+                String status = log.getAction().contains("FAILED") ? "Failed" : "Success";
+
+                // Create row data
+                Object[] row = new Object[]{
+                    timeStr,
+                    username,
+                    log.getAction(),
+                    log.getEntityType() != null ? log.getEntityType() : "N/A",
+                    status,
+                    log.getIpAddress() != null ? log.getIpAddress() : "N/A"
+                };
+
+                // Add row to table
+                tableModel.addRow(row);
+            }
+
+            System.out.println("Loaded " + recentLogs.size() + " audit logs");
+
+        } catch (Exception e) {
+            System.err.println("Error loading audit logs: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Load compliance alerts
+    private void loadComplianceAlerts() {
+        try {
+            StringBuilder alerts = new StringBuilder();
+
+            // Get recent logs to check for suspicious activity
+            List<AuditLog> recentLogs = auditLogDAO.getRecentAuditLogs(100);
+
+            // Count failed login attempts in last hour
+            int failedLogins = 0;
+            for (AuditLog log : recentLogs) {
+                if (log.getAction().equals("FAILED_LOGIN")
+                        && DateUtil.isWithinLastHours(log.getTimestamp(), 1)) {
+                    failedLogins++;
+                }
+            }
+
+            // Add alert if too many failed logins
+            if (failedLogins > 3) {
+                alerts.append("ALERT: ").append(failedLogins)
+                        .append(" failed login attempts in the last hour\n\n");
+            }
+
+            // Show all clear message if no alerts
+            if (alerts.length() == 0) {
+                alerts.append("No compliance violations detected\n");
+                alerts.append("All system activities are within normal parameters\n");
+                alerts.append("No suspicious access patterns identified");
+            } else {
+                alerts.append("\nAll other systems operating normally");
+            }
+
+            // Update text area
+            jTextAreaAlerts.setText(alerts.toString());
+
+        } catch (Exception e) {
+            System.err.println("Error loading compliance alerts: " + e.getMessage());
+            jTextAreaAlerts.setText("Error loading alerts: " + e.getMessage());
+        }
     }
 
     /**
@@ -30,7 +201,6 @@ public class AuditorDashboard extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jLabelIssuesCount = new javax.swing.JLabel();
         jButtonGenerateReport = new javax.swing.JButton();
-        jButtonSecuritySettings = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableRecentLogs = new javax.swing.JTable();
@@ -86,8 +256,11 @@ public class AuditorDashboard extends javax.swing.JPanel {
         );
 
         jButtonGenerateReport.setText("GENERATE AUDIT REPORT");
-
-        jButtonSecuritySettings.setText("SECURITY SETTINGS");
+        jButtonGenerateReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGenerateReportActionPerformed(evt);
+            }
+        });
 
         jTableRecentLogs.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -123,6 +296,11 @@ public class AuditorDashboard extends javax.swing.JPanel {
         jLabel1.setText("MediNexus | Audit Portal");
 
         jButtonLogout.setText("Logout");
+        jButtonLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLogoutActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel2.setText("AUDIT SUMMARY");
@@ -299,15 +477,14 @@ public class AuditorDashboard extends javax.swing.JPanel {
                         .addGap(49, 49, 49)
                         .addComponent(jLabel13)
                         .addGap(36, 36, 36)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(91, 91, 91)
-                        .addComponent(jButtonViewAllLogs)
-                        .addGap(65, 65, 65)
-                        .addComponent(jButtonGenerateReport)
-                        .addGap(69, 69, 69)
-                        .addComponent(jButtonSecuritySettings)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(91, 91, 91)
+                .addComponent(jButtonViewAllLogs)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonGenerateReport)
+                .addGap(174, 174, 174))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,14 +517,51 @@ public class AuditorDashboard extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonViewAllLogs)
-                    .addComponent(jButtonGenerateReport)
-                    .addComponent(jButtonSecuritySettings))
+                    .addComponent(jButtonGenerateReport))
                 .addGap(54, 54, 54))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonViewAllLogsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonViewAllLogsActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Clear table
+            tableModel.setRowCount(0);
+
+            // Get all audit logs instead of just recent
+            List<AuditLog> allLogs = auditLogDAO.getAllAuditLogs();
+
+            // Populate table with all logs
+            for (AuditLog log : allLogs) {
+                User user = userDAO.getUserByID(log.getUserID());
+                String username = user != null ? user.getUsername() : "Unknown";
+                String timeStr = DateUtil.formatDateTime(log.getTimestamp());
+                String status = log.getAction().contains("FAILED") ? "Failed" : "Success";
+
+                Object[] row = new Object[]{
+                    timeStr,
+                    username,
+                    log.getAction(),
+                    log.getEntityType() != null ? log.getEntityType() : "N/A",
+                    status,
+                    log.getIpAddress() != null ? log.getIpAddress() : "N/A"
+                };
+
+                tableModel.addRow(row);
+            }
+
+            // Show confirmation message
+            JOptionPane.showMessageDialog(this,
+                    "Loaded " + allLogs.size() + " audit logs",
+                    "All Logs",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButtonViewAllLogsActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -358,11 +572,75 @@ public class AuditorDashboard extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField6ActionPerformed
 
+    private void jButtonGenerateReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateReportActionPerformed
+        try {
+            Employee currentAuditor = UserSession.getInstance().getCurrentEmployee();
+
+            if (currentAuditor == null) {
+                JOptionPane.showMessageDialog(this, "Auditor not found", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            StringBuilder reportContent = new StringBuilder();
+            reportContent.append("AUDIT REPORT\n");
+            reportContent.append("Generated by: ").append(currentAuditor.getFullName()).append("\n");
+            reportContent.append("Date: ").append(DateUtil.getCurrentDateTime()).append("\n");
+            reportContent.append("=".repeat(50)).append("\n\n");
+            reportContent.append("SYSTEM ACTIVITY (Last 24 Hours)\n");
+            reportContent.append("-".repeat(50)).append("\n");
+            reportContent.append("Total Logins: ").append(jLabelTotalLogins.getText()).append("\n");
+            reportContent.append("Failed Attempts: ").append(jTextField1.getText()).append("\n");
+            reportContent.append("Data Access Events: ").append(jTextField2.getText()).append("\n");
+            reportContent.append("Modifications: ").append(jTextField3.getText()).append("\n");
+            reportContent.append("Compliance Violations: ").append(jTextField4.getText()).append("\n");
+
+            ReportDAO reportDAO = new ReportDAO();
+            Report report = new Report();
+            report.setGeneratedBy(currentAuditor.getEmployeeID());
+            report.setReportType("AUDIT_SUMMARY");
+            report.setReportTitle("Audit Report - " + DateUtil.getCurrentDate());
+            report.setReportContent(reportContent.toString());
+
+            boolean saved = reportDAO.createReport(report);
+
+            if (saved) {
+                JOptionPane.showMessageDialog(this,
+                        "Report generated successfully!\n\nReport ID: R" + report.getReportID(),
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to generate report", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButtonGenerateReportActionPerformed
+
+    private void jButtonLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogoutActionPerformed
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to logout?",
+                "Logout",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Clear user session
+            UserSession.getInstance().clearSession();
+
+            // If this panel is inside a frame, close the parent frame
+            javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+
+            // Open login window when ready
+            //new LoginFrame().setVisible(true);
+            System.out.println("Auditor logged out");
+        }
+    }//GEN-LAST:event_jButtonLogoutActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonGenerateReport;
     private javax.swing.JButton jButtonLogout;
-    private javax.swing.JButton jButtonSecuritySettings;
     private javax.swing.JButton jButtonViewAllLogs;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
