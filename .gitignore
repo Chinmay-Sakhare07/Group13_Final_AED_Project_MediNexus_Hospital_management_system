@@ -1,16 +1,13 @@
-# Compiled class file
+# ============================
+# macOS junk
+# ============================
+.DS_Store
+**/.DS_Store
+
+# ============================
+# Java compiled files
+# ============================
 *.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
 *.jar
 *.war
 *.nar
@@ -19,7 +16,52 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Logs
+*.log
+
+# JVM crash logs
 hs_err_pid*
 replay_pid*
-/MediNexus/build/
+
+# ============================
+# NetBeans specific
+# ============================
+nbproject/private/
+nbproject/private/private.properties
+nbproject/private/private.xml
+
+# NetBeans build folders
+/build/
+/dist/
+MediNexus/build/
+MediNexus/dist/
+
+# Misc NetBeans cache
+**/nbproject/private/
+**/build/
+**/dist/
+
+# ============================
+# J2ME
+# ============================
+.mtj.tmp/
+
+# ============================
+# GUI Form cache
+# ============================
+*.form
+
+# ============================
+# Ignore all IDE-specific files
+# ============================
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Eclipse
+.project
+.classpath
+.settings/
