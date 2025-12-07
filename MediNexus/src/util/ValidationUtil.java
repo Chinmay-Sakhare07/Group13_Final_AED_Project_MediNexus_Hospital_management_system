@@ -8,32 +8,33 @@ package util;
  *
  * @author Chinmay
  */
+import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 /**
  * Utility class for input validation
  */
 public class ValidationUtil {
-    
+
     // Regex patterns for validation
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
     private static final String PHONE_REGEX = "^[0-9]{10}$";
     private static final String NAME_REGEX = "^[A-Za-z\\s]{2,50}$";
-    
+
     /**
      * Check if string is not empty
      */
     public static boolean isNotEmpty(String value) {
         return value != null && !value.trim().isEmpty();
     }
-    
+
     /**
      * Check if string is empty
      */
     public static boolean isEmpty(String value) {
         return value == null || value.trim().isEmpty();
     }
-    
+
     /**
      * Validate email format
      */
@@ -43,7 +44,7 @@ public class ValidationUtil {
         }
         return Pattern.compile(EMAIL_REGEX).matcher(email).matches();
     }
-    
+
     /**
      * Validate phone number (10 digits)
      */
@@ -53,7 +54,7 @@ public class ValidationUtil {
         }
         return Pattern.compile(PHONE_REGEX).matcher(phone).matches();
     }
-    
+
     /**
      * Validate name (letters and spaces only, 2-50 characters)
      */
@@ -63,7 +64,7 @@ public class ValidationUtil {
         }
         return Pattern.compile(NAME_REGEX).matcher(name).matches();
     }
-    
+
     /**
      * Check if value is a positive number
      */
@@ -78,7 +79,7 @@ public class ValidationUtil {
             return false;
         }
     }
-    
+
     /**
      * Check if value is a valid integer
      */
@@ -93,52 +94,72 @@ public class ValidationUtil {
             return false;
         }
     }
-    
+
     /**
      * Check if value is within range (inclusive)
      */
     public static boolean isInRange(int value, int min, int max) {
         return value >= min && value <= max;
     }
-    
+
     /**
      * Check if value is within range (inclusive)
      */
     public static boolean isInRange(double value, double min, double max) {
         return value >= min && value <= max;
     }
-    
+    // Validate age from date of birth
+
+    public static boolean isValidAge(LocalDate dateOfBirth) {
+        if (dateOfBirth == null) {
+            return false;
+        }
+
+        // Calculate age
+        LocalDate now = LocalDate.now();
+        int age = now.getYear() - dateOfBirth.getYear();
+
+        // Adjust if birthday hasn't occurred this year
+        if (now.getMonthValue() < dateOfBirth.getMonthValue()
+                || (now.getMonthValue() == dateOfBirth.getMonthValue() && now.getDayOfMonth() < dateOfBirth.getDayOfMonth())) {
+            age--;
+        }
+
+        // Age must be between 0 and 150
+        return age >= 0 && age <= 150;
+    }
+
     /**
      * Test validation methods
      */
     public static void main(String[] args) {
         System.out.println("=== Validation Utility Test ===\n");
-        
+
         // Email tests
         System.out.println("EMAIL VALIDATION:");
         System.out.println("'test@email.com' → " + (isValidEmail("test@email.com") ? "VALID" : "INVALID"));
         System.out.println("'invalid.email' → " + (isValidEmail("invalid.email") ? "VALID" : "INVALID"));
-        
+
         // Phone tests
         System.out.println("\nPHONE VALIDATION:");
         System.out.println("'9876543210' → " + (isValidPhone("9876543210") ? "VALID" : "INVALID"));
         System.out.println("'123' → " + (isValidPhone("123") ? "VALID" : "INVALID"));
-        
+
         // Name tests
         System.out.println("\nNAME VALIDATION:");
         System.out.println("'Sreesh Kulkarni' → " + (isValidName("Sreesh Kulkarni") ? "VALID" : "INVALID"));
         System.out.println("'Sreesh123' → " + (isValidName("Sreesh123") ? "VALID" : "INVALID"));
-        
+
         // Number tests
         System.out.println("\nNUMBER VALIDATION:");
         System.out.println("'100' is positive → " + (isPositiveNumber("100") ? "YES" : "NO"));
         System.out.println("'-50' is positive → " + (isPositiveNumber("-50") ? "YES" : "NO"));
-        
+
         // Range tests
         System.out.println("\nRANGE VALIDATION:");
         System.out.println("50 in range [0-100] → " + (isInRange(50, 0, 100) ? "YES" : "NO"));
         System.out.println("150 in range [0-100] → " + (isInRange(150, 0, 100) ? "YES" : "NO"));
-        
+
         System.out.println("\nAll validation tests completed!");
     }
 }
