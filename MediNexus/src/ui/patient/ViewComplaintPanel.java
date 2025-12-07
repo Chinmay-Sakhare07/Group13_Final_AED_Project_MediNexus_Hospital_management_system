@@ -4,6 +4,18 @@
  */
 package ui.patient;
 
+import dao.*;
+import model.*;
+import services.*;
+import session.UserSession;
+import util.DateUtil;
+import util.ValidationUtil;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 /**
  *
  * @author pranjalpatil
@@ -13,8 +25,319 @@ public class ViewComplaintPanel extends javax.swing.JPanel {
     /**
      * Creates new form ViewComplaintPanel
      */
-    public ViewComplaintPanel() {
+    private PatientDashboard parentDashboard;
+
+    // Services and DAOs
+    private ComplaintService complaintService;
+    private AssessmentDAO assessmentDAO;
+    private DiagnosisDAO diagnosisDAO;
+    private TreatmentDAO treatmentDAO;
+    private EmployeeDAO employeeDAO;
+    private DefaultTableModel tableModel;
+
+    // Current filter
+    private String currentFilter = "ALL";
+
+    public ViewComplaintPanel(PatientDashboard parent) {
+        this.parentDashboard = parent;
         initComponents();
+
+        // Initialize services
+        this.complaintService = new ComplaintService();
+        this.assessmentDAO = new AssessmentDAO();
+        this.diagnosisDAO = new DiagnosisDAO();
+        this.treatmentDAO = new TreatmentDAO();
+        this.employeeDAO = new EmployeeDAO();
+
+        // Get table model
+        this.tableModel = (DefaultTableModel) jTable2.getModel();
+
+        // Setup table
+        setupTable();
+
+        // Load complaints
+        loadComplaints();
+    }
+
+    // Setup table columns
+    private void setupTable() {
+        tableModel.setColumnIdentifiers(new Object[]{
+            "ID",
+            "CATEGORY",
+            "STATUS",
+            "PRIORITY",
+            "ASSIGNED TO",
+            "DATE"
+        });
+
+        // Add table selection listener
+        jTable2.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    displaySelectedComplaint();
+                }
+            }
+        });
+    }
+
+    // Load complaints based on current filter
+    private void loadComplaints() {
+        try {
+            // Clear table
+            tableModel.setRowCount(0);
+
+            // Get all complaints for patient
+            List<Complaint> allComplaints = complaintService.getMyComplaints();
+
+            if (allComplaints == null || allComplaints.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No complaints found", "Info", JOptionPane.INFORMATION_MESSAGE);
+                clearDetailsPanel();
+                return;
+            }
+
+            // Filter complaints based on current filter
+            for (Complaint c : allComplaints) {
+                boolean shouldAdd = false;
+
+                if (currentFilter.equals("ALL")) {
+                    shouldAdd = true;
+                } else if (currentFilter.equals("ACTIVE")) {
+                    // Active = not CLOSED
+                    shouldAdd = !c.getStatus().equals("CLOSED");
+                } else if (currentFilter.equals("CLOSED")) {
+                    shouldAdd = c.getStatus().equals("CLOSED");
+                }
+
+                if (shouldAdd) {
+                    // Get assigned doctor name
+                    String assignedTo = "Pending";
+                    if (c.getAssignedDoctorID() != null) {
+                        Employee doctor = employeeDAO.getEmployeeByID(c.getAssignedDoctorID());
+                        if (doctor != null) {
+                            assignedTo = "Dr. " + doctor.getFullName();
+                        }
+                    }
+
+                    Object[] row = new Object[]{
+                        "C" + c.getComplaintID(),
+                        c.getCategory(),
+                        c.getStatus(),
+                        c.getPriority(),
+                        assignedTo,
+                        DateUtil.formatDateTime(c.getCreatedDate())
+                    };
+
+                    tableModel.addRow(row);
+                }
+            }
+
+            System.out.println("Loaded complaints with filter: " + currentFilter);
+
+        } catch (Exception e) {
+            System.err.println("Error loading complaints: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Display selected complaint details
+    private void displaySelectedComplaint() {
+        try {
+            int selectedRow = jTable2.getSelectedRow();
+
+            if (selectedRow == -1) {
+                clearDetailsPanel();
+                return;
+            }
+
+            // Get complaint ID from table
+            String complaintIDStr = (String) jTable2.getValueAt(selectedRow, 0);
+            int complaintID = Integer.parseInt(complaintIDStr.substring(1)); // Remove 'C' prefix
+
+            // Get complaint details using DAO (READ operation)
+            ComplaintDAO complaintDAO = new ComplaintDAO();
+            Complaint complaint = complaintDAO.getComplaintByID(complaintID);
+
+            if (complaint == null) {
+                clearDetailsPanel();
+                return;
+            }
+
+            // Display basic info
+            jTextField2.setText(complaint.getCategory());
+            jTextField2.setEditable(false);
+
+            jTextField3.setText(complaint.getStatus());
+            jTextField3.setEditable(false);
+
+            jTextField4.setText(complaint.getDescription());
+            jTextField4.setEditable(false);
+
+            // Get assigned doctor
+            String doctorName = "Not assigned";
+            if (complaint.getAssignedDoctorID() != null) {
+                Employee doctor = employeeDAO.getEmployeeByID(complaint.getAssignedDoctorID());
+                if (doctor != null) {
+                    doctorName = "Dr. " + doctor.getFullName();
+                }
+            }
+            jTextField5.setText(doctorName);
+            jTextField5.setEditable(false);
+
+            // Get diagnosis if exists
+            Assessment assessment = assessmentDAO.getAssessmentByComplaintID(complaintID);
+            if (assessment != null) {
+                Diagnosis diagnosis = diagnosisDAO.getDiagnosisByAssessmentID(assessment.getAssessmentID());
+
+                if (diagnosis != null) {
+                    jTextField6.setText(diagnosis.getDiagnosisName() + " - " + diagnosis.getDescription());
+                    jTextField6.setEditable(false);
+
+                    // Get treatment if exists
+                    Treatment treatment = treatmentDAO.getTreatmentByDiagnosisID(diagnosis.getDiagnosisID());
+                    if (treatment != null) {
+                        jTextField7.setText(treatment.getTreatmentPlan());
+                        jTextField7.setEditable(false);
+                    } else {
+                        jTextField7.setText("No treatment plan yet");
+                        jTextField7.setEditable(false);
+                    }
+                } else {
+                    jTextField6.setText("No diagnosis yet");
+                    jTextField6.setEditable(false);
+                    jTextField7.setText("No treatment plan yet");
+                    jTextField7.setEditable(false);
+                }
+            } else {
+                jTextField6.setText("Assessment pending");
+                jTextField6.setEditable(false);
+                jTextField7.setText("No treatment plan yet");
+                jTextField7.setEditable(false);
+            }
+
+            // Update progress bar based on status
+            updateProgressBar(complaint.getStatus());
+
+        } catch (Exception e) {
+            System.err.println("Error displaying complaint: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Update progress bar based on complaint status
+    private void updateProgressBar(String status) {
+        int progress = 0;
+
+        switch (status) {
+            case "SUBMITTED":
+                progress = 20;
+                break;
+            case "ASSIGNED":
+                progress = 40;
+                break;
+            case "IN_PROGRESS":
+                progress = 60;
+                break;
+            case "DIAGNOSED":
+                progress = 80;
+                break;
+            case "TREATED":
+            case "CLOSED":
+                progress = 100;
+                break;
+            default:
+                progress = 0;
+        }
+
+        jProgressBar1.setValue(progress);
+    }
+
+    // Clear details panel
+    private void clearDetailsPanel() {
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jTextField5.setText("");
+        jTextField6.setText("");
+        jTextField7.setText("");
+        jProgressBar1.setValue(0);
+    }
+
+    // Search complaints
+    private void searchComplaints() {
+        try {
+            String searchTerm = jTextField1.getText().trim().toLowerCase();
+
+            if (ValidationUtil.isEmpty(searchTerm)) {
+                // If search is empty, reload all
+                loadComplaints();
+                return;
+            }
+
+            // Clear table
+            tableModel.setRowCount(0);
+
+            // Get all complaints
+            List<Complaint> allComplaints = complaintService.getMyComplaints();
+
+            if (allComplaints != null) {
+                // Filter by search term
+                for (Complaint c : allComplaints) {
+                    // Search in description, category, or status
+                    String searchText = (c.getDescription() + " " + c.getCategory() + " " + c.getStatus()).toLowerCase();
+
+                    if (searchText.contains(searchTerm)) {
+                        String assignedTo = "Pending";
+                        if (c.getAssignedDoctorID() != null) {
+                            Employee doctor = employeeDAO.getEmployeeByID(c.getAssignedDoctorID());
+                            if (doctor != null) {
+                                assignedTo = "Dr. " + doctor.getFullName();
+                            }
+                        }
+
+                        Object[] row = new Object[]{
+                            "C" + c.getComplaintID(),
+                            c.getCategory(),
+                            c.getStatus(),
+                            c.getPriority(),
+                            assignedTo,
+                            DateUtil.formatDateTime(c.getCreatedDate())
+                        };
+
+                        tableModel.addRow(row);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error searching complaints: " + e.getMessage());
+        }
+    }
+
+    // Navigate back to dashboard
+    private void navigateBackToDashboard() {
+        try {
+            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            if (window instanceof javax.swing.JFrame) {
+                javax.swing.JFrame frame = (javax.swing.JFrame) window;
+
+                frame.getContentPane().removeAll();
+
+                if (parentDashboard != null) {
+                    parentDashboard.refreshDashboard();
+                    frame.getContentPane().add(parentDashboard);
+                } else {
+                    frame.getContentPane().add(new PatientDashboard());
+                }
+
+                frame.revalidate();
+                frame.repaint();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error navigating back: " + e.getMessage());
+        }
     }
 
     /**
@@ -75,6 +398,11 @@ public class ViewComplaintPanel extends javax.swing.JPanel {
         jButton1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jButton1.setForeground(new java.awt.Color(13, 115, 119));
         jButton1.setText("BACK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -110,16 +438,31 @@ public class ViewComplaintPanel extends javax.swing.JPanel {
         jToggleButton1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jToggleButton1.setForeground(new java.awt.Color(13, 115, 119));
         jToggleButton1.setText("ALL");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
 
         jToggleButton2.setBackground(new java.awt.Color(232, 244, 248));
         jToggleButton2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jToggleButton2.setForeground(new java.awt.Color(13, 115, 119));
         jToggleButton2.setText("ACTIVE");
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
 
         jToggleButton3.setBackground(new java.awt.Color(232, 244, 248));
         jToggleButton3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jToggleButton3.setForeground(new java.awt.Color(13, 115, 119));
         jToggleButton3.setText("CLOSED");
+        jToggleButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(13, 115, 119));
@@ -127,6 +470,11 @@ public class ViewComplaintPanel extends javax.swing.JPanel {
 
         jTextField1.setBackground(new java.awt.Color(232, 244, 248));
         jTextField1.setForeground(new java.awt.Color(13, 115, 119));
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -299,11 +647,21 @@ public class ViewComplaintPanel extends javax.swing.JPanel {
         jButton2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jButton2.setForeground(new java.awt.Color(232, 244, 248));
         jButton2.setText("VIEW VITALS");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(13, 115, 119));
         jButton3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jButton3.setForeground(new java.awt.Color(232, 244, 248));
         jButton3.setText("VIEW DIAGNOSIS");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -364,6 +722,80 @@ public class ViewComplaintPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        navigateBackToDashboard();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int selectedRow = jTable2.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a complaint first", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Get complaint ID
+        String complaintIDStr = (String) jTable2.getValueAt(selectedRow, 0);
+        int complaintID = Integer.parseInt(complaintIDStr.substring(1));
+
+        JOptionPane.showMessageDialog(this,
+                "Opening Vital Signs for Complaint C" + complaintID + "\n\n(Panel not yet implemented)",
+                "View Vitals",
+                JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int selectedRow = jTable2.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a complaint first", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Diagnosis is already shown in jTextField6
+        if (ValidationUtil.isEmpty(jTextField6.getText()) || jTextField6.getText().equals("No diagnosis yet") || jTextField6.getText().equals("Assessment pending")) {
+            JOptionPane.showMessageDialog(this, "No diagnosis available for this complaint yet", "Info", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Diagnosis Details:\n\n" + jTextField6.getText() + "\n\nTreatment:\n" + jTextField7.getText(),
+                    "Diagnosis",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        currentFilter = "ALL";
+        jToggleButton1.setSelected(true);
+        jToggleButton2.setSelected(false);
+        jToggleButton3.setSelected(false);
+        loadComplaints();
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        currentFilter = "ACTIVE";
+        jToggleButton1.setSelected(false);
+        jToggleButton2.setSelected(true);
+        jToggleButton3.setSelected(false);
+        loadComplaints();
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
+
+    private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
+        currentFilter = "CLOSED";
+        jToggleButton1.setSelected(false);
+        jToggleButton2.setSelected(false);
+        jToggleButton3.setSelected(true);
+        loadComplaints();
+    }//GEN-LAST:event_jToggleButton3ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        searchComplaints();
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            searchComplaints();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

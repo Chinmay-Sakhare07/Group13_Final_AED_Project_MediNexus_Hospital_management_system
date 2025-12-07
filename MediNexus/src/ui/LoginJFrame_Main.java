@@ -12,6 +12,7 @@ import model.User;
 import services.AuthService;
 import services.RegistrationService;
 import ui.Forms.ForgotPasswordForm;
+import ui.patient.PatientDashboard;
 import util.ValidationUtil;
 
 /**
@@ -307,9 +308,12 @@ public class LoginJFrame_Main extends javax.swing.JFrame {
     private void openDashboardForRole(String role) {
         switch (role) {
             case "PATIENT":
-                // Open patient dashboard when ready
-                // new PatientDashboard().setVisible(true);
-                JOptionPane.showMessageDialog(this, "Opening Patient Dashboard...");
+                javax.swing.JFrame patientFrame = new javax.swing.JFrame("Patient Portal");
+                patientFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+                patientFrame.add(new ui.patient.PatientDashboard());
+                patientFrame.setSize(900, 750);
+                patientFrame.setLocationRelativeTo(null);
+                patientFrame.setVisible(true);
                 break;
 
             case "DOCTOR":

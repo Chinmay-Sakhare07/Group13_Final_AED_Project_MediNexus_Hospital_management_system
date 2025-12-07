@@ -4,6 +4,13 @@
  */
 package ui.patient;
 
+import dao.*;
+import model.*;
+import services.*;
+import session.UserSession;
+import util.ValidationUtil;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author pranjalpatil
@@ -13,8 +20,15 @@ public class FileComplaintPanel extends javax.swing.JPanel {
     /**
      * Creates new form FileComplaintPanel
      */
-    public FileComplaintPanel() {
+    private PatientDashboard parentDashboard;
+    private ComplaintService complaintService;
+
+    public FileComplaintPanel(PatientDashboard parent) {
+        this.parentDashboard = parent;
         initComponents();
+
+        this.complaintService = new ComplaintService();
+
     }
 
     /**
@@ -62,6 +76,11 @@ public class FileComplaintPanel extends javax.swing.JPanel {
         jButton1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jButton1.setForeground(new java.awt.Color(13, 115, 119));
         jButton1.setText("BACK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -134,11 +153,21 @@ public class FileComplaintPanel extends javax.swing.JPanel {
         jButton2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jButton2.setForeground(new java.awt.Color(232, 244, 248));
         jButton2.setText("SUBMIT COMPLAINT");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setBackground(new java.awt.Color(13, 115, 119));
         jButton3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jButton3.setForeground(new java.awt.Color(232, 244, 248));
         jButton3.setText("CANCEL");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -230,6 +259,154 @@ public class FileComplaintPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        navigateBackToDashboard();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String category = (String) jComboBox1.getSelectedItem();
+        String priority = (String) jComboBox2.getSelectedItem();
+        String chiefComplaint = jTextField2.getText().trim();
+        String symptoms = jTextField1.getText().trim();
+        String durationStr = jTextField3.getText().trim();
+
+        // Validate category (from combobox1)
+        if (ValidationUtil.isEmpty(category)) {
+            showError("Please select a category");
+            return;
+        }
+
+        // Validate priority (from combobox2)
+        if (ValidationUtil.isEmpty(priority)) {
+            showError("Please select a priority");
+            return;
+        }
+
+        // Validate chief complaint
+        if (ValidationUtil.isEmpty(chiefComplaint)) {
+            showError("Please enter your chief complaint");
+            return;
+        }
+
+        if (chiefComplaint.length() < 10) {
+            showError("Chief complaint must be at least 10 characters");
+            return;
+        }
+
+        // Validate symptoms
+        if (ValidationUtil.isEmpty(symptoms)) {
+            showError("Please describe your symptoms");
+            return;
+        }
+
+        if (symptoms.length() < 10) {
+            showError("Symptoms description must be at least 10 characters");
+            return;
+        }
+
+        // Validate duration
+        if (ValidationUtil.isEmpty(durationStr)) {
+            showError("Please enter duration in days");
+            return;
+        }
+
+        if (!ValidationUtil.isValidInteger(durationStr)) {
+            showError("Duration must be a number");
+            return;
+        }
+
+        int duration = Integer.parseInt(durationStr);
+        if (duration <= 0) {
+            showError("Duration must be greater than 0");
+            return;
+        }
+
+        // Combine chief complaint and symptoms into description
+        String fullDescription = "Chief Complaint: " + chiefComplaint + "\n\n"
+                + "Symptoms: " + symptoms + "\n\n"
+                + "Duration: " + duration + " days";
+
+        // Submit complaint using service
+        Complaint complaint = complaintService.submitComplaint(category, priority, fullDescription);
+
+        if (complaint != null) {
+            // Success
+            JOptionPane.showMessageDialog(this,
+                    "Complaint submitted successfully!\n\n"
+                    + "Complaint ID: C" + complaint.getComplaintID() + "\n"
+                    + "Category: " + complaint.getCategory() + "\n"
+                    + "Priority: " + complaint.getPriority() + "\n"
+                    + "Status: " + complaint.getStatus() + "\n\n"
+                    + "A doctor will review your complaint shortly.",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            // Clear form
+            clearForm();
+
+            // Navigate back to dashboard
+            navigateBackToDashboard();
+
+        } else {
+            // Failed
+            showError("Failed to submit complaint. Please try again.");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void navigateBackToDashboard() {
+        try {
+            // Get parent frame
+            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            if (window instanceof javax.swing.JFrame) {
+                javax.swing.JFrame frame = (javax.swing.JFrame) window;
+
+                // Replace panel with dashboard
+                frame.getContentPane().removeAll();
+
+                // Refresh parent dashboard data
+                if (parentDashboard != null) {
+                    parentDashboard.refreshDashboard();
+                    frame.getContentPane().add(parentDashboard);
+                } else {
+                    // Create new dashboard if parent is null
+                    frame.getContentPane().add(new PatientDashboard());
+                }
+
+                frame.revalidate();
+                frame.repaint();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error navigating back: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to cancel?\nAny unsaved data will be lost.",
+                "Confirm Cancel",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Clear form and go back
+            clearForm();
+            navigateBackToDashboard();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void clearForm() {
+        jComboBox1.setSelectedIndex(0);
+        jComboBox2.setSelectedIndex(0);
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+    }
+
+    // Show error message
+    private void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Validation Error", JOptionPane.ERROR_MESSAGE);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

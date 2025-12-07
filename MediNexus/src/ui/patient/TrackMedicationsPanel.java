@@ -13,7 +13,7 @@ public class TrackMedicationsPanel extends javax.swing.JPanel {
     /**
      * Creates new form TrackMedicationsPanel
      */
-    public TrackMedicationsPanel() {
+    public TrackMedicationsPanel(PatientDashboard aThis) {
         initComponents();
     }
 
