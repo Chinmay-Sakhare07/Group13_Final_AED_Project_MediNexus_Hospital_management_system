@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.patient;
+package ui;
 
 /**
  *
@@ -66,7 +66,7 @@ public class ViewVitalsPanel extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(232, 244, 248));
-        jLabel1.setText("MEDINEXUS");
+        jLabel1.setText("MEDIRESOLVE");
 
         jLabel2.setForeground(new java.awt.Color(232, 244, 248));
         jLabel2.setText("My Vital Signs");
@@ -84,7 +84,7 @@ public class ViewVitalsPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 408, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 383, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(64, 64, 64))
         );
@@ -273,14 +273,12 @@ public class ViewVitalsPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton2.setBackground(new java.awt.Color(13, 115, 119));
+        jButton2.setBackground(new java.awt.Color(255, 255, 204));
         jButton2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(232, 244, 248));
         jButton2.setText("EXPORT TO PDF");
 
-        jButton3.setBackground(new java.awt.Color(13, 115, 119));
+        jButton3.setBackground(new java.awt.Color(255, 255, 204));
         jButton3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(232, 244, 248));
         jButton3.setText("PRINT");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

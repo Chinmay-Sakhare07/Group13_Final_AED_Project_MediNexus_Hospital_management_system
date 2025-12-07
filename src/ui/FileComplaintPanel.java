@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.patient;
+package ui;
 
 /**
  *
@@ -54,7 +54,7 @@ public class FileComplaintPanel extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(232, 244, 248));
-        jLabel1.setText("MEDINEXUS");
+        jLabel1.setText("MEDIRESOLVE");
 
         jLabel2.setForeground(new java.awt.Color(232, 244, 248));
         jLabel2.setText("File New Complaint");
@@ -72,7 +72,7 @@ public class FileComplaintPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 378, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(64, 64, 64))
         );

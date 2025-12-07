@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.patient;
+package ui;
 
 /**
  *
@@ -71,7 +71,7 @@ public class TrackMedicationsPanel extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(232, 244, 248));
-        jLabel1.setText("MEDINEXUS");
+        jLabel1.setText("MEDIRESOLVE");
 
         jLabel2.setForeground(new java.awt.Color(232, 244, 248));
         jLabel2.setText("My Medications");

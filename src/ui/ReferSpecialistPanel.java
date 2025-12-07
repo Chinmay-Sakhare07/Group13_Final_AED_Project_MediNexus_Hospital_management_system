@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package ui.doctor;
+package ui;
 
 /**
  *
@@ -66,7 +66,7 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(232, 244, 248));
-        jLabel1.setText("MEDINEXUS");
+        jLabel1.setText("MEDIRESOLVE");
 
         jLabel2.setForeground(new java.awt.Color(232, 244, 248));
         jLabel2.setText("Refer to Specialist");
@@ -105,12 +105,8 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         jLabel7.setForeground(new java.awt.Color(13, 115, 119));
         jLabel7.setText("PATIENT AND DIAGNOSIS INFORMATION");
 
-        jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(13, 115, 119));
         jLabel3.setText("PATIENT");
 
-        jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(13, 115, 119));
         jLabel4.setText("DIAGNOSIS");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -146,20 +142,14 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel5.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(13, 115, 119));
         jLabel5.setText("REFERRAL DETAILS");
 
-        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(13, 115, 119));
         jLabel6.setText("SPECIALITY REQUIRED");
 
         ComboBoxSpecialityRequires.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         ComboBoxSpecialityRequires.setForeground(new java.awt.Color(13, 115, 119));
         ComboBoxSpecialityRequires.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cardiology (Heart & Cardiovascular)", "Pulmonology (Lungs & Respiratory)", "Neurology (Brain & Nervous System)", "Orthopedics (Bones & Joints)", "Gastroenterology (Digestive System)", "Endocrinology (Hormones & Metabolism)", "Nephrology (Kidneys)", "Oncology (Cancer)", "Dermatology (Skin)", "Psychiatry (Mental Health)", "General Surgery", "Cardiothoracic Surgery", "Neurosurgery", "Orthopedic Surgery", "Plastic Surgery", "Ophthalmology (Eyes)", "ENT (Ear, Nose, Throat)", "Urology (Urinary System)", "Gynecology (Women's Health)", "Pediatrics (Children)", "Geriatrics (Elderly)", "Rheumatology (Autoimmune & Joint disorders)", "Hematology (Blood disorders)", "Infectious Disease", "Emergency Medicine", "Anesthesiology", "Radiology", "Pathology" }));
 
-        jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(13, 115, 119));
         jLabel8.setText("PREFERRED SPECIALITY");
 
         comboBoxPreferredSpec.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
@@ -170,20 +160,12 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         comboBoxPreferredSpec2.setForeground(new java.awt.Color(13, 115, 119));
         comboBoxPreferredSpec2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jCheckBox1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox1.setForeground(new java.awt.Color(13, 115, 119));
         jCheckBox1.setText("Any Available Specialist");
 
-        jLabel9.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(13, 115, 119));
         jLabel9.setText("URGENCY");
 
-        jCheckBox2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox2.setForeground(new java.awt.Color(13, 115, 119));
         jCheckBox2.setText("Routine");
 
-        jCheckBox3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox3.setForeground(new java.awt.Color(13, 115, 119));
         jCheckBox3.setText("Urgent");
         jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -191,12 +173,8 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
             }
         });
 
-        jCheckBox4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jCheckBox4.setForeground(new java.awt.Color(13, 115, 119));
         jCheckBox4.setText("Emergency");
 
-        jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(13, 115, 119));
         jLabel10.setText("REASON FOR REFERRAL");
 
         txtAreaReferral.setColumns(20);
@@ -204,8 +182,6 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         txtAreaReferral.setRows(5);
         jScrollPane1.setViewportView(txtAreaReferral);
 
-        jLabel11.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(13, 115, 119));
         jLabel11.setText("CLINICAL SUMMARY FOR SPECIALIST ");
 
         txtAreaClinicalSummanry.setColumns(20);
@@ -213,16 +189,12 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         txtAreaClinicalSummanry.setRows(5);
         jScrollPane2.setViewportView(txtAreaClinicalSummanry);
 
-        jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(13, 115, 119));
         jLabel12.setText("ATTACH DOCUMENTS");
 
         btmChooseFiles.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btmChooseFiles.setForeground(new java.awt.Color(13, 115, 119));
         btmChooseFiles.setText("CHOOSE FILES");
 
-        jLabel13.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(13, 115, 119));
         jLabel13.setText("SELECTED");
 
         btnSubmitReferal.setBackground(new java.awt.Color(13, 115, 119));
