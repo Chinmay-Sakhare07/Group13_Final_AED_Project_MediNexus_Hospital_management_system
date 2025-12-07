@@ -60,12 +60,12 @@ public class ViewAssignedComplaintsPanel extends javax.swing.JPanel {
         jLabel15 = new javax.swing.JLabel();
         fieldHR = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        fieldTemp = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jTextField12 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        fieldAssignToOtherDoctor = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(232, 244, 248));
 
@@ -303,10 +303,10 @@ public class ViewAssignedComplaintsPanel extends javax.swing.JPanel {
         jButton3.setForeground(new java.awt.Color(232, 244, 248));
         jButton3.setText("VIEW HISTORY");
 
-        jButton4.setBackground(new java.awt.Color(13, 115, 119));
-        jButton4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(232, 244, 248));
-        jButton4.setText("ASSIGN TO OTHER DOCTOR");
+        fieldAssignToOtherDoctor.setBackground(new java.awt.Color(13, 115, 119));
+        fieldAssignToOtherDoctor.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        fieldAssignToOtherDoctor.setForeground(new java.awt.Color(232, 244, 248));
+        fieldAssignToOtherDoctor.setText("ASSIGN TO OTHER DOCTOR");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -337,7 +337,7 @@ public class ViewAssignedComplaintsPanel extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel16)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(fieldTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jButton3))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -347,7 +347,7 @@ public class ViewAssignedComplaintsPanel extends javax.swing.JPanel {
                                 .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(57, 57, 57)
-                                .addComponent(jButton4)))))
+                                .addComponent(fieldAssignToOtherDoctor)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -369,14 +369,14 @@ public class ViewAssignedComplaintsPanel extends javax.swing.JPanel {
                     .addComponent(jLabel15)
                     .addComponent(fieldHR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldTemp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17)
                     .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(fieldAssignToOtherDoctor))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -400,6 +400,7 @@ public class ViewAssignedComplaintsPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JComboBox<String> cmboBoxFilter;
+    private javax.swing.JButton fieldAssignToOtherDoctor;
     private javax.swing.JTextField fieldBP;
     private javax.swing.JTextField fieldCategory;
     private javax.swing.JTextField fieldContact;
@@ -409,10 +410,10 @@ public class ViewAssignedComplaintsPanel extends javax.swing.JPanel {
     private javax.swing.JTextField fieldPriority;
     private javax.swing.JTextField fieldSearch;
     private javax.swing.JTextField fieldSymptoms;
+    private javax.swing.JTextField fieldTemp;
     private javax.swing.JTextField fldChiefComplaint;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -435,7 +436,6 @@ public class ViewAssignedComplaintsPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTable tblViewAssigned;
     // End of variables declaration//GEN-END:variables
