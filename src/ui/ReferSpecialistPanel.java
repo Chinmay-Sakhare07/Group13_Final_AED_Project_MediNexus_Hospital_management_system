@@ -105,8 +105,12 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         jLabel7.setForeground(new java.awt.Color(13, 115, 119));
         jLabel7.setText("PATIENT AND DIAGNOSIS INFORMATION");
 
+        jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(13, 115, 119));
         jLabel3.setText("PATIENT");
 
+        jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(13, 115, 119));
         jLabel4.setText("DIAGNOSIS");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -142,24 +146,44 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel5.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(13, 115, 119));
         jLabel5.setText("REFERRAL DETAILS");
 
+        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(13, 115, 119));
         jLabel6.setText("SPECIALITY REQUIRED");
 
+        jComboBox1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jComboBox1.setForeground(new java.awt.Color(13, 115, 119));
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cardiology (Heart & Cardiovascular)", "Pulmonology (Lungs & Respiratory)", "Neurology (Brain & Nervous System)", "Orthopedics (Bones & Joints)", "Gastroenterology (Digestive System)", "Endocrinology (Hormones & Metabolism)", "Nephrology (Kidneys)", "Oncology (Cancer)", "Dermatology (Skin)", "Psychiatry (Mental Health)", "General Surgery", "Cardiothoracic Surgery", "Neurosurgery", "Orthopedic Surgery", "Plastic Surgery", "Ophthalmology (Eyes)", "ENT (Ear, Nose, Throat)", "Urology (Urinary System)", "Gynecology (Women's Health)", "Pediatrics (Children)", "Geriatrics (Elderly)", "Rheumatology (Autoimmune & Joint disorders)", "Hematology (Blood disorders)", "Infectious Disease", "Emergency Medicine", "Anesthesiology", "Radiology", "Pathology" }));
 
+        jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(13, 115, 119));
         jLabel8.setText("PREFERRED SPECIALITY");
 
+        jComboBox2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jComboBox2.setForeground(new java.awt.Color(13, 115, 119));
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jComboBox3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jComboBox3.setForeground(new java.awt.Color(13, 115, 119));
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jCheckBox1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jCheckBox1.setForeground(new java.awt.Color(13, 115, 119));
         jCheckBox1.setText("Any Available Specialist");
 
+        jLabel9.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(13, 115, 119));
         jLabel9.setText("URGENCY");
 
+        jCheckBox2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jCheckBox2.setForeground(new java.awt.Color(13, 115, 119));
         jCheckBox2.setText("Routine");
 
+        jCheckBox3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jCheckBox3.setForeground(new java.awt.Color(13, 115, 119));
         jCheckBox3.setText("Urgent");
         jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,27 +191,39 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
             }
         });
 
+        jCheckBox4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jCheckBox4.setForeground(new java.awt.Color(13, 115, 119));
         jCheckBox4.setText("Emergency");
 
+        jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(13, 115, 119));
         jLabel10.setText("REASON FOR REFERRAL");
 
         jTextArea1.setColumns(20);
+        jTextArea1.setForeground(new java.awt.Color(13, 115, 119));
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
+        jLabel11.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(13, 115, 119));
         jLabel11.setText("CLINICAL SUMMARY FOR SPECIALIST ");
 
         jTextArea2.setColumns(20);
+        jTextArea2.setForeground(new java.awt.Color(13, 115, 119));
         jTextArea2.setRows(5);
         jScrollPane2.setViewportView(jTextArea2);
 
+        jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(13, 115, 119));
         jLabel12.setText("ATTACH DOCUMENTS");
 
+        jButton2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(13, 115, 119));
         jButton2.setText("CHOOSE FILES");
 
+        jLabel13.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(13, 115, 119));
         jLabel13.setText("SELECTED");
-
-        jButton3.setText("jButton3");
 
         jButton4.setBackground(new java.awt.Color(153, 255, 153));
         jButton4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
@@ -295,7 +331,7 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                     .addComponent(jLabel12)
                     .addComponent(jButton2)
                     .addComponent(jLabel13)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
