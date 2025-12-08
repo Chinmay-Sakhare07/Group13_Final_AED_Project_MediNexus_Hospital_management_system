@@ -4,11 +4,19 @@
  */
 package ui.patient;
 
-import dao.*;
-import model.*;
-import services.*;
+import dao.ComplaintDAO;
+import dao.EmployeeDAO;
+import dao.UserDAO;
+import model.Complaint;
+import model.Employee;
+import model.User;
+import services.ComplaintService;
 import session.UserSession;
 import util.ValidationUtil;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,13 +30,21 @@ public class FileComplaintPanel extends javax.swing.JPanel {
      */
     private PatientDashboard parentDashboard;
     private ComplaintService complaintService;
+    private EmployeeDAO employeeDAO;
+    private UserDAO userDAO;
+    private Map<String, Integer> doctorMap;
 
     public FileComplaintPanel(PatientDashboard parent) {
         this.parentDashboard = parent;
+
         initComponents();
 
         this.complaintService = new ComplaintService();
+        this.employeeDAO = new EmployeeDAO();
+        this.userDAO = new UserDAO();
+        this.doctorMap = new HashMap<>();
 
+        populateDoctorComboBox();
     }
 
     /**
@@ -61,6 +77,8 @@ public class FileComplaintPanel extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        jComboBox3 = new javax.swing.JComboBox<>();
 
         jPanel1.setBackground(new java.awt.Color(232, 244, 248));
 
@@ -91,7 +109,7 @@ public class FileComplaintPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 378, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 374, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(64, 64, 64))
         );
@@ -169,6 +187,13 @@ public class FileComplaintPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(13, 115, 119));
+        jLabel12.setText("Doctor");
+
+        jComboBox3.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jComboBox3.setForeground(new java.awt.Color(13, 115, 119));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -187,28 +212,34 @@ public class FileComplaintPanel extends javax.swing.JPanel {
                             .addComponent(jLabel8)
                             .addComponent(jLabel9)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addComponent(jLabel10))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jButton2)
+                                .addComponent(jLabel11))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGap(145, 145, 145)
                                     .addComponent(jButton3))
                                 .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                     .addComponent(jLabel6)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(101, 101, 101)
-                                    .addComponent(jLabel5)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jButton2)
-                                .addComponent(jLabel11)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGap(51, 51, 51)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel12)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(jLabel5)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                .addContainerGap(179, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,8 +248,12 @@ public class FileComplaintPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel12)
+                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jLabel5)
@@ -240,7 +275,7 @@ public class FileComplaintPanel extends javax.swing.JPanel {
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
@@ -251,7 +286,10 @@ public class FileComplaintPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(28, 28, 28))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,124 +302,75 @@ public class FileComplaintPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // 1. Capture Inputs
         String category = (String) jComboBox1.getSelectedItem();
         String priority = (String) jComboBox2.getSelectedItem();
+        String selectedDoctorName = (String) jComboBox3.getSelectedItem();
         String chiefComplaint = jTextField2.getText().trim();
         String symptoms = jTextField1.getText().trim();
         String durationStr = jTextField3.getText().trim();
 
-        // Validate category (from combobox1)
-        if (ValidationUtil.isEmpty(category)) {
-            showError("Please select a category");
+        // 2. Validate Inputs
+        if (ValidationUtil.isEmpty(category) || ValidationUtil.isEmpty(priority)) {
+            showError("Please select a category and priority.");
             return;
         }
-
-        // Validate priority (from combobox2)
-        if (ValidationUtil.isEmpty(priority)) {
-            showError("Please select a priority");
+        if (ValidationUtil.isEmpty(chiefComplaint) || chiefComplaint.length() < 5) {
+            showError("Chief complaint must be at least 5 characters.");
             return;
         }
-
-        // Validate chief complaint
-        if (ValidationUtil.isEmpty(chiefComplaint)) {
-            showError("Please enter your chief complaint");
-            return;
-        }
-
-        if (chiefComplaint.length() < 10) {
-            showError("Chief complaint must be at least 10 characters");
-            return;
-        }
-
-        // Validate symptoms
         if (ValidationUtil.isEmpty(symptoms)) {
-            showError("Please describe your symptoms");
+            showError("Please describe your symptoms.");
             return;
         }
-
-        if (symptoms.length() < 10) {
-            showError("Symptoms description must be at least 10 characters");
-            return;
-        }
-
-        // Validate duration
-        if (ValidationUtil.isEmpty(durationStr)) {
-            showError("Please enter duration in days");
-            return;
-        }
-
-        if (!ValidationUtil.isValidInteger(durationStr)) {
-            showError("Duration must be a number");
+        if (ValidationUtil.isEmpty(durationStr) || !ValidationUtil.isValidInteger(durationStr)) {
+            showError("Please enter a valid numeric duration.");
             return;
         }
 
         int duration = Integer.parseInt(durationStr);
-        if (duration <= 0) {
-            showError("Duration must be greater than 0");
-            return;
+
+        
+        Integer assignedDoctorID = null;
+
+        
+        System.out.println("DEBUG: User selected -> " + selectedDoctorName);
+
+        if (selectedDoctorName != null && !selectedDoctorName.equals("Assign Automatically") && !selectedDoctorName.equals("No Doctors Available")) {
+            if (doctorMap.containsKey(selectedDoctorName)) {
+                assignedDoctorID = doctorMap.get(selectedDoctorName);
+                System.out.println("DEBUG: Found ID -> " + assignedDoctorID);
+            } else {
+                System.out.println("DEBUG: Error - Selected name not found in map!");
+            }
+        } else {
+            System.out.println("DEBUG: Auto-assign selected (ID will be NULL)");
         }
 
-        // Combine chief complaint and symptoms into description
-        String fullDescription = "Chief Complaint: " + chiefComplaint + "\n\n"
-                + "Symptoms: " + symptoms + "\n\n"
-                + "Duration: " + duration + " days";
+        // 4. Combine Description
+        String fullDescription = "Chief Complaint: " + chiefComplaint + " | Symptoms: " + symptoms + " | Duration: " + duration + " days";
 
-        // Submit complaint using service
-        Complaint complaint = complaintService.submitComplaint(category, priority, fullDescription);
+        
+        Complaint newComplaint = new Complaint();
+        newComplaint.setCategory(category);
+        newComplaint.setPriority(priority);
+        newComplaint.setDescription(fullDescription);
+        newComplaint.setAssignedDoctorID(assignedDoctorID);
+
+        // 6. Submit
+        Complaint complaint = complaintService.submitComplaint(newComplaint);
 
         if (complaint != null) {
-            // Success
             JOptionPane.showMessageDialog(this,
-                    "Complaint submitted successfully!\n\n"
-                    + "Complaint ID: C" + complaint.getComplaintID() + "\n"
-                    + "Category: " + complaint.getCategory() + "\n"
-                    + "Priority: " + complaint.getPriority() + "\n"
-                    + "Status: " + complaint.getStatus() + "\n\n"
-                    + "A doctor will review your complaint shortly.",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
-
-            // Clear form
+                    "Complaint submitted successfully!\nID: C" + complaint.getComplaintID(),
+                    "Success", JOptionPane.INFORMATION_MESSAGE);
             clearForm();
-
-            // Navigate back to dashboard
             navigateBackToDashboard();
-
         } else {
-            // Failed
-            showError("Failed to submit complaint. Please try again.");
+            showError("Failed to submit complaint.");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void navigateBackToDashboard() {
-        try {
-            // Get parent frame
-            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
-
-            if (window instanceof javax.swing.JFrame) {
-                javax.swing.JFrame frame = (javax.swing.JFrame) window;
-
-                // Replace panel with dashboard
-                frame.getContentPane().removeAll();
-
-                // Refresh parent dashboard data
-                if (parentDashboard != null) {
-                    parentDashboard.refreshDashboard();
-                    frame.getContentPane().add(parentDashboard);
-                } else {
-                    // Create new dashboard if parent is null
-                    frame.getContentPane().add(new PatientDashboard());
-                }
-
-                frame.revalidate();
-                frame.repaint();
-            }
-
-        } catch (Exception e) {
-            System.err.println("Error navigating back: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int confirm = JOptionPane.showConfirmDialog(this,
                 "Are you sure you want to cancel?\nAny unsaved data will be lost.",
@@ -389,7 +378,6 @@ public class FileComplaintPanel extends javax.swing.JPanel {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            // Clear form and go back
             clearForm();
             navigateBackToDashboard();
         }
@@ -398,14 +386,67 @@ public class FileComplaintPanel extends javax.swing.JPanel {
     private void clearForm() {
         jComboBox1.setSelectedIndex(0);
         jComboBox2.setSelectedIndex(0);
+        jComboBox3.setSelectedIndex(0);
         jTextField1.setText("");
         jTextField2.setText("");
         jTextField3.setText("");
     }
 
-    // Show error message
     private void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Validation Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void navigateBackToDashboard() {
+        try {
+            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+            if (window instanceof javax.swing.JFrame) {
+                javax.swing.JFrame frame = (javax.swing.JFrame) window;
+                frame.getContentPane().removeAll();
+                if (parentDashboard != null) {
+                    parentDashboard.refreshDashboard();
+                    frame.getContentPane().add(parentDashboard);
+                } else {
+                    frame.getContentPane().add(new PatientDashboard());
+                }
+                frame.revalidate();
+                frame.repaint();
+            }
+        } catch (Exception e) {
+            System.err.println("Error navigating back: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void populateDoctorComboBox() {
+        try {
+            jComboBox3.removeAllItems();
+            doctorMap.clear();
+
+            // Default Option: No specific doctor (Triage Queue)
+            String defaultOption = "Assign Automatically";
+            jComboBox3.addItem(defaultOption);
+            doctorMap.put(defaultOption, null);
+
+            // Fetch all employees
+            List<Employee> allEmployees = employeeDAO.getAllEmployees();
+
+            // Filter and add only Doctors/Specialists
+            for (Employee emp : allEmployees) {
+                User user = userDAO.getUserByID(emp.getUserID());
+
+                if (user != null && (user.getRole().equals("DOCTOR") || user.getRole().equals("SPECIALIST"))) {
+                    // Create a display label (e.g., "Dr. Smith (Cardiology)")
+                    String doctorLabel = "Dr. " + emp.getLastName() + " (" + emp.getSpecialization() + ")";
+
+                    jComboBox3.addItem(doctorLabel);
+                    doctorMap.put(doctorLabel, emp.getEmployeeID());
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error populating doctor list: " + e.getMessage());
+            jComboBox3.addItem("Error loading doctors");
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -414,9 +455,11 @@ public class FileComplaintPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

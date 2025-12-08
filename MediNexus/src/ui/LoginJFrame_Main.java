@@ -13,6 +13,13 @@ import services.AuthService;
 import services.RegistrationService;
 import ui.Forms.ForgotPasswordForm;
 import ui.patient.PatientDashboard;
+import ui.doctor.DoctorDashboard;
+import ui.specialist.SpecialistDashboard;
+import ui.pharmacist.PharmacistDashboard;
+import ui.insurance.InsuranceDashboard;
+import ui.researcher.ResearcherDashboard;
+import ui.admin.AdminDashboard;
+import ui.auditor.AuditorDashboard;
 import util.ValidationUtil;
 
 /**
@@ -306,60 +313,43 @@ public class LoginJFrame_Main extends javax.swing.JFrame {
     }
 
     private void openDashboardForRole(String role) {
+        javax.swing.JFrame dashboardFrame = new javax.swing.JFrame();
+        dashboardFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        dashboardFrame.setSize(900, 700); // Standard size for most dashboards
+        dashboardFrame.setLocationRelativeTo(null);
+        dashboardFrame.setTitle(role + " Portal");
+
         switch (role) {
             case "PATIENT":
-                javax.swing.JFrame patientFrame = new javax.swing.JFrame("Patient Portal");
-                patientFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-                patientFrame.add(new ui.patient.PatientDashboard());
-                patientFrame.setSize(900, 750);
-                patientFrame.setLocationRelativeTo(null);
-                patientFrame.setVisible(true);
+                dashboardFrame.add(new PatientDashboard());
                 break;
 
             case "DOCTOR":
-                // Open doctor dashboard when ready
-                // new DoctorDashboard().setVisible(true);
-                JOptionPane.showMessageDialog(this, "Opening Doctor Dashboard...");
+                dashboardFrame.add(new DoctorDashboard());
                 break;
 
             case "SPECIALIST":
-                // Open specialist dashboard when ready
-                // new SpecialistDashboard().setVisible(true);
-                JOptionPane.showMessageDialog(this, "Opening Specialist Dashboard...");
+                dashboardFrame.add(new SpecialistDashboard());
                 break;
 
             case "PHARMACIST":
-                // Open pharmacist dashboard when ready
-                // new PharmacistDashboard().setVisible(true);
-                JOptionPane.showMessageDialog(this, "Opening Pharmacist Dashboard...");
+                dashboardFrame.add(new PharmacistDashboard());
                 break;
 
             case "INSURANCE":
-                // Open insurance dashboard when ready
-                // new InsuranceDashboard().setVisible(true);
-                JOptionPane.showMessageDialog(this, "Opening Insurance Dashboard...");
+                dashboardFrame.add(new InsuranceDashboard());
                 break;
 
             case "RESEARCHER":
-                // Open researcher dashboard when ready
-                // new ResearcherDashboard().setVisible(true);
-                JOptionPane.showMessageDialog(this, "Opening Researcher Dashboard...");
+                dashboardFrame.add(new ResearcherDashboard());
                 break;
 
             case "AUDITOR":
-                // Open auditor dashboard
-                javax.swing.JFrame frame = new javax.swing.JFrame("Auditor Dashboard");
-                frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-                frame.add(new ui.auditor.AuditorDashboard());
-                frame.setSize(900, 700);
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
+                dashboardFrame.add(new AuditorDashboard());
                 break;
 
             case "ADMIN":
-                // Open admin dashboard when ready
-                // new AdminDashboard().setVisible(true);
-                JOptionPane.showMessageDialog(this, "Opening Admin Dashboard...");
+                dashboardFrame.add(new AdminDashboard());
                 break;
 
             default:
@@ -367,7 +357,10 @@ public class LoginJFrame_Main extends javax.swing.JFrame {
                         "Unknown role: " + role,
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
+                return; // Do not show frame if role is unknown
         }
+
+        dashboardFrame.setVisible(true);
     }
 
     private void createAuditLog(int userID, String action, String entityType,

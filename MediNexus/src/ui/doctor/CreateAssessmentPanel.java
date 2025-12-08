@@ -4,17 +4,150 @@
  */
 package ui.doctor;
 
+import dao.*;
+import model.*;
+import services.*;
+import session.UserSession;
+import util.DateUtil;
+import util.ValidationUtil;
+import javax.swing.JOptionPane;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author pranjalpatil
  */
 public class CreateAssessmentPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form CreateAssessmentPanel
-     */
-    public CreateAssessmentPanel() {
+    private DoctorService doctorService;
+    private ComplaintDAO complaintDAO;
+    private PatientDAO patientDAO;
+    private int complaintID;
+    private Complaint currentComplaint;
+
+    public CreateAssessmentPanel(int complaintID) {
+        this.complaintID = complaintID;
         initComponents();
+
+        this.doctorService = new DoctorService();
+        this.complaintDAO = new ComplaintDAO();
+        this.patientDAO = new PatientDAO();
+
+        loadComplaintInfo();
+    }
+
+    // Load complaint information
+    private void loadComplaintInfo() {
+        try {
+            // Get complaint details
+            currentComplaint = complaintDAO.getComplaintByID(complaintID);
+
+            if (currentComplaint == null) {
+                JOptionPane.showMessageDialog(this, "Complaint not found", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Display complaint ID
+            fieldComplaintID.setText("C" + complaintID);
+            fieldComplaintID.setEditable(false);
+
+            // Get patient details
+            Patient patient = patientDAO.getPatientByID(currentComplaint.getPatientID());
+
+            if (patient != null) {
+                fieldPatient.setText(patient.getFullName());
+                fieldPatient.setEditable(false);
+
+                fieldAge.setText(String.valueOf(patient.getAge()));
+                fieldAge.setEditable(false);
+            }
+
+            // Set chief complaint from complaint description
+            fieldChiefComplaint.setText(currentComplaint.getDescription());
+            fieldChiefComplaint.setEditable(false);
+
+        } catch (Exception e) {
+            System.err.println("Error loading complaint info: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Get selected symptoms from checkboxes
+    private String getSelectedSymptoms() {
+        List<String> symptoms = new ArrayList<>();
+
+        if (cbFever.isSelected()) {
+            symptoms.add("Fever");
+        }
+        if (cbCough.isSelected()) {
+            symptoms.add("Cough");
+        }
+        if (cbHeadache.isSelected()) {
+            symptoms.add("Headache");
+        }
+        if (cbFatigue.isSelected()) {
+            symptoms.add("Fatigue");
+        }
+        if (cbNausea.isSelected()) {
+            symptoms.add("Nausea");
+        }
+        if (cbChestpain.isSelected()) {
+            symptoms.add("Chest Pain");
+        }
+        if (cbShortBreath.isSelected()) {
+            symptoms.add("Shortness of Breath");
+        }
+        if (cbDizziness.isSelected()) {
+            symptoms.add("Dizziness");
+        }
+        if (cbAbdominalPain.isSelected()) {
+            symptoms.add("Abdominal Pain");
+        }
+        if (cbSweatong.isSelected()) {
+            symptoms.add("Sweating");
+        }
+        if (cbVommiting.isSelected()) {
+            symptoms.add("Vomiting");
+        }
+
+        return String.join(", ", symptoms);
+    }
+
+    // Navigate back to dashboard
+    private void navigateBackToDashboard() {
+        try {
+            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            if (window instanceof javax.swing.JFrame) {
+                javax.swing.JFrame frame = (javax.swing.JFrame) window;
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(new DoctorDashboard());
+                frame.revalidate();
+                frame.repaint();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error navigating back: " + e.getMessage());
+        }
+    }
+
+    // Navigate to diagnosis panel
+    private void navigateToDiagnosis(int assessmentID) {
+        try {
+            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            if (window instanceof javax.swing.JFrame) {
+                javax.swing.JFrame frame = (javax.swing.JFrame) window;
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(new CreateDiagnosisPanel(assessmentID));
+                frame.revalidate();
+                frame.repaint();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error navigating to diagnosis: " + e.getMessage());
+        }
     }
 
     /**
@@ -78,6 +211,11 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
         btnBack.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnBack.setForeground(new java.awt.Color(13, 115, 119));
         btnBack.setText("BACK");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -337,11 +475,21 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
         btnCrteDiagnosos.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnCrteDiagnosos.setForeground(new java.awt.Color(232, 244, 248));
         btnCrteDiagnosos.setText("CREATE DIAGNOSIS");
+        btnCrteDiagnosos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrteDiagnososActionPerformed(evt);
+            }
+        });
 
         btnChange.setBackground(new java.awt.Color(13, 115, 119));
         btnChange.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnChange.setForeground(new java.awt.Color(232, 244, 248));
         btnChange.setText("CANCEL");
+        btnChange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -396,8 +544,80 @@ public class CreateAssessmentPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_cbShortBreathActionPerformed
 
     private void btnSveAssessmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSveAssessmentActionPerformed
-        // TODO add your handling code here:
+        String symptoms = getSelectedSymptoms();
+
+        if (ValidationUtil.isEmpty(symptoms)) {
+            JOptionPane.showMessageDialog(this, "Please select at least one symptom", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Get physical examination
+        String physicalExam = fieldPhysicalExamination.getText().trim();
+
+        if (ValidationUtil.isEmpty(physicalExam)) {
+            JOptionPane.showMessageDialog(this, "Please enter physical examination findings", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Get preliminary notes
+        String notes = fieldPreliminaryNotes.getText().trim();
+
+        if (ValidationUtil.isEmpty(notes)) {
+            JOptionPane.showMessageDialog(this, "Please enter preliminary notes", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Create assessment using service
+        Assessment assessment = doctorService.createAssessment(complaintID, symptoms, physicalExam, notes);
+
+        if (assessment != null) {
+            JOptionPane.showMessageDialog(this,
+                    "Assessment saved successfully!\n\nAssessment ID: A" + assessment.getAssessmentID(),
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            navigateBackToDashboard();
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to save assessment", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnSveAssessmentActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        navigateBackToDashboard();
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnCrteDiagnososActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrteDiagnososActionPerformed
+        String symptoms = getSelectedSymptoms();
+        String physicalExam = fieldPhysicalExamination.getText().trim();
+        String notes = fieldPreliminaryNotes.getText().trim();
+        
+        if (ValidationUtil.isEmpty(symptoms) || ValidationUtil.isEmpty(physicalExam) || ValidationUtil.isEmpty(notes)) {
+            JOptionPane.showMessageDialog(this, "Please complete the assessment first", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Create assessment
+        Assessment assessment = doctorService.createAssessment(complaintID, symptoms, physicalExam, notes);
+        
+        if (assessment != null) {
+            // Navigate to diagnosis panel
+            navigateToDiagnosis(assessment.getAssessmentID());
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to create assessment", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnCrteDiagnososActionPerformed
+
+    private void btnChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeActionPerformed
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Cancel assessment? Unsaved data will be lost.",
+                "Confirm",
+                JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            navigateBackToDashboard();
+        }
+
+    }//GEN-LAST:event_btnChangeActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

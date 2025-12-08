@@ -379,7 +379,6 @@ public class ViewComplaintPanel extends javax.swing.JPanel {
         jTextField7 = new javax.swing.JTextField();
         jProgressBar1 = new javax.swing.JProgressBar();
         jLabel11 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(232, 244, 248));
@@ -643,16 +642,6 @@ public class ViewComplaintPanel extends javax.swing.JPanel {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        jButton2.setBackground(new java.awt.Color(13, 115, 119));
-        jButton2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(232, 244, 248));
-        jButton2.setText("VIEW VITALS");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
         jButton3.setBackground(new java.awt.Color(13, 115, 119));
         jButton3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jButton3.setForeground(new java.awt.Color(232, 244, 248));
@@ -676,9 +665,7 @@ public class ViewComplaintPanel extends javax.swing.JPanel {
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(195, 195, 195)
-                .addComponent(jButton2)
-                .addGap(177, 177, 177)
+                .addGap(279, 279, 279)
                 .addComponent(jButton3)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -693,9 +680,7 @@ public class ViewComplaintPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                .addComponent(jButton3)
                 .addGap(0, 8, Short.MAX_VALUE))
         );
 
@@ -725,24 +710,6 @@ public class ViewComplaintPanel extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         navigateBackToDashboard();
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int selectedRow = jTable2.getSelectedRow();
-
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a complaint first", "Info", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-
-        // Get complaint ID
-        String complaintIDStr = (String) jTable2.getValueAt(selectedRow, 0);
-        int complaintID = Integer.parseInt(complaintIDStr.substring(1));
-
-        JOptionPane.showMessageDialog(this,
-                "Opening Vital Signs for Complaint C" + complaintID + "\n\n(Panel not yet implemented)",
-                "View Vitals",
-                JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int selectedRow = jTable2.getSelectedRow();
@@ -799,7 +766,6 @@ public class ViewComplaintPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
