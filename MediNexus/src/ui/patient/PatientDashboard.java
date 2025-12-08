@@ -4,17 +4,139 @@
  */
 package ui.patient;
 
+import dao.*;
+import model.*;
+import services.*;
+import session.UserSession;
+import util.DateUtil;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author pranjalpatil
  */
 public class PatientDashboard extends javax.swing.JPanel {
 
+    private ComplaintService complaintService;
+    private NotificationService notificationService;
+    private DefaultTableModel tableModel;
+
     /**
      * Creates new form PatientDashboard
      */
     public PatientDashboard() {
         initComponents();
+        this.complaintService = new ComplaintService();
+        this.notificationService = new NotificationService();
+
+        // Get table model
+        this.tableModel = (DefaultTableModel) jTable1.getModel();
+
+        // Load dashboard data
+        loadDashboardData();
+    }
+
+    // Load all dashboard data
+    private void loadDashboardData() {
+        loadUserInfo();
+        loadRecentComplaints();
+        loadNotifications();
+    }
+
+    // Load logged in user information
+    private void loadUserInfo() {
+        try {
+            User currentUser = UserSession.getInstance().getCurrentUser();
+            Patient currentPatient = UserSession.getInstance().getCurrentPatient();
+
+            if (currentUser != null) {
+                // Display username
+                jTextField1.setText(currentUser.getUsername());
+                jTextField1.setEditable(false);
+            }
+
+            if (currentPatient != null) {
+                System.out.println("Patient loaded: " + currentPatient.getFullName());
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error loading user info: " + e.getMessage());
+        }
+    }
+
+    // Load recent complaints into table
+    private void loadRecentComplaints() {
+        try {
+            // Clear table
+            tableModel.setRowCount(0);
+
+            // Get complaints for current patient
+            List<Complaint> complaints = complaintService.getMyComplaints();
+
+            if (complaints != null) {
+                // Show only last 5 complaints
+                int count = Math.min(5, complaints.size());
+
+                for (int i = 0; i < count; i++) {
+                    Complaint c = complaints.get(i);
+
+                    Object[] row = new Object[]{
+                        "C" + c.getComplaintID(),
+                        c.getCategory(),
+                        c.getStatus(),
+                        DateUtil.formatDateTime(c.getCreatedDate())
+                    };
+
+                    tableModel.addRow(row);
+                }
+
+                System.out.println("Loaded " + count + " recent complaints");
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error loading complaints: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Load notifications
+    private void loadNotifications() {
+        try {
+            // Get unread notifications
+            List<Notification> notifications = notificationService.getUnreadNotifications();
+
+            if (notifications != null && !notifications.isEmpty()) {
+                StringBuilder notifText = new StringBuilder();
+
+                // Show max 5 notifications
+                int count = Math.min(5, notifications.size());
+
+                for (int i = 0; i < count; i++) {
+                    Notification n = notifications.get(i);
+                    notifText.append("• ").append(n.getMessage()).append("\n");
+                }
+
+                jTextField2.setText(notifText.toString());
+                jTextField2.setEditable(false);
+
+                System.out.println("Loaded " + count + " notifications");
+            } else {
+                jTextField2.setText("No new notifications");
+                jTextField2.setEditable(false);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error loading notifications: " + e.getMessage());
+            jTextField2.setText("Error loading notifications");
+        }
+    }
+
+    // Refresh dashboard data
+    public void refreshDashboard() {
+        loadRecentComplaints();
+        loadNotifications();
     }
 
     /**
@@ -45,10 +167,6 @@ public class PatientDashboard extends javax.swing.JPanel {
         jTextField2 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
 
         jPanel1.setBackground(new java.awt.Color(232, 244, 248));
 
@@ -64,6 +182,11 @@ public class PatientDashboard extends javax.swing.JPanel {
         jButton1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jButton1.setForeground(new java.awt.Color(13, 115, 119));
         jButton1.setText("BACK");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(232, 244, 248));
@@ -130,6 +253,11 @@ public class PatientDashboard extends javax.swing.JPanel {
         jButton4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jButton4.setForeground(new java.awt.Color(232, 244, 248));
         jButton4.setText("VIEW MY COMPLAINTS");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -159,18 +287,6 @@ public class PatientDashboard extends javax.swing.JPanel {
 
         jLabel5.setForeground(new java.awt.Color(232, 244, 248));
 
-        jLabel4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(232, 244, 248));
-        jLabel4.setText("STATUS");
-
-        jTextField3.setBackground(new java.awt.Color(232, 244, 248));
-
-        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(232, 244, 248));
-        jLabel6.setText("DATE");
-
-        jTextField4.setBackground(new java.awt.Color(232, 244, 248));
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -178,30 +294,14 @@ public class PatientDashboard extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(198, 198, 198)
                 .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(105, 105, 105))
+                .addContainerGap(597, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -276,12 +376,87 @@ public class PatientDashboard extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Get parent frame
+            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            if (window instanceof javax.swing.JFrame) {
+                javax.swing.JFrame frame = (javax.swing.JFrame) window;
+
+                // Replace current panel with FileComplaintPanel
+                frame.getContentPane().removeAll();
+                FileComplaintPanel filePanel = new FileComplaintPanel(this);
+                frame.getContentPane().add(filePanel);
+                frame.revalidate();
+                frame.repaint();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error opening file complaint panel: " + e.getMessage());
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        try {
+            // Get parent frame
+            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            if (window instanceof javax.swing.JFrame) {
+                javax.swing.JFrame frame = (javax.swing.JFrame) window;
+
+                // Replace current panel with TrackMedicationsPanel
+                frame.getContentPane().removeAll();
+                TrackMedicationsPanel medPanel = new TrackMedicationsPanel(this);
+                frame.getContentPane().add(medPanel);
+                frame.revalidate();
+                frame.repaint();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error opening medications panel: " + e.getMessage());
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to logout?",
+                "Logout",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Clear session
+            UserSession.getInstance().clearSession();
+
+            // Close parent window
+            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+            if (window != null) {
+                window.setVisible(false);
+            }
+
+            System.out.println("Patient logged out");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        try {
+            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            if (window instanceof javax.swing.JFrame) {
+                javax.swing.JFrame frame = (javax.swing.JFrame) window;
+
+                frame.getContentPane().removeAll();
+                ViewComplaintPanel viewPanel = new ViewComplaintPanel(this);
+                frame.getContentPane().add(viewPanel);
+                frame.revalidate();
+                frame.repaint();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error opening view complaints: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -292,9 +467,7 @@ public class PatientDashboard extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -306,7 +479,5 @@ public class PatientDashboard extends javax.swing.JPanel {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }
