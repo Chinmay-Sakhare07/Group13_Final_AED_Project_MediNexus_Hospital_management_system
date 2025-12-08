@@ -4,17 +4,155 @@
  */
 package ui.doctor;
 
+import dao.*;
+import java.util.List;
+import model.*;
+import services.*;
+import session.UserSession;
+import util.ValidationUtil;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author pranjalpatil
  */
 public class ReferSpecialistPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ReferSpecialistPanel
-     */
+    private DoctorService doctorService;
+    private DiagnosisDAO diagnosisDAO;
+    private AssessmentDAO assessmentDAO;
+    private ComplaintDAO complaintDAO;
+    private PatientDAO patientDAO;
+    private EmployeeDAO employeeDAO;
+    private int diagnosisID;
+    private Diagnosis currentDiagnosis;
+
     public ReferSpecialistPanel() {
         initComponents();
+        initializeServices();
+    }
+
+    public ReferSpecialistPanel(int diagnosisID) {
+        this.diagnosisID = diagnosisID;
+        initComponents();
+        initializeServices();
+        loadDiagnosisInfo();
+    }
+
+    private void initializeServices() {
+        this.doctorService = new DoctorService();
+        this.diagnosisDAO = new DiagnosisDAO();
+        this.assessmentDAO = new AssessmentDAO();
+        this.complaintDAO = new ComplaintDAO();
+        this.patientDAO = new PatientDAO();
+        this.employeeDAO = new EmployeeDAO();
+
+        loadSpecialistsList();
+    }
+
+    // Load diagnosis information
+    private void loadDiagnosisInfo() {
+        try {
+            // Get diagnosis
+            currentDiagnosis = diagnosisDAO.getDiagnosisByID(diagnosisID);
+
+            if (currentDiagnosis == null) {
+                JOptionPane.showMessageDialog(this, "Diagnosis not found", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Display diagnosis
+            fieldDiagnosis.setText(currentDiagnosis.getDiagnosisName());
+            fieldDiagnosis.setEditable(false);
+
+            // Get patient info
+            Assessment assessment = assessmentDAO.getAssessmentByID(currentDiagnosis.getAssessmentID());
+
+            if (assessment != null) {
+                Complaint complaint = complaintDAO.getComplaintByID(assessment.getComplaintID());
+
+                if (complaint != null) {
+                    Patient patient = patientDAO.getPatientByID(complaint.getPatientID());
+
+                    if (patient != null) {
+                        fieldPatient.setText(patient.getFullName());
+                        fieldPatient.setEditable(false);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error loading diagnosis info: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Load list of available specialists
+    private void loadSpecialistsList() {
+        try {
+            // Get all specialists
+            List<Employee> specialists = employeeDAO.getEmployeesBySpecialization("Cardiology");
+
+            // Clear comboboxes
+            comboBoxPreferredSpec.removeAllItems();
+            comboBoxPreferredSpec2.removeAllItems();
+
+            // Add specialists to comboboxes
+            for (Employee specialist : specialists) {
+                String displayName = "Dr. " + specialist.getFullName();
+                comboBoxPreferredSpec.addItem(displayName);
+                comboBoxPreferredSpec2.addItem(displayName);
+            }
+
+            // Add default option
+            if (specialists.isEmpty()) {
+                comboBoxPreferredSpec.addItem("No specialists available");
+                comboBoxPreferredSpec2.addItem("No specialists available");
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error loading specialists: " + e.getMessage());
+        }
+    }
+
+    // Get selected urgency
+    private String getSelectedUrgency() {
+        if (jCheckBox2.isSelected()) {
+            return "Routine";
+        }
+        if (jCheckBox3.isSelected()) {
+            return "Urgent";
+        }
+        if (jCheckBox4.isSelected()) {
+            return "Emergency";
+        }
+        return "Routine";
+    }
+
+    // Update urgency checkboxes (mutually exclusive)
+    private void updateUrgencyCheckboxes(javax.swing.JCheckBox selected) {
+        jCheckBox2.setSelected(false);
+        jCheckBox3.setSelected(false);
+        jCheckBox4.setSelected(false);
+        selected.setSelected(true);
+    }
+
+    // Navigate back to dashboard
+    private void navigateBackToDashboard() {
+        try {
+            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            if (window instanceof javax.swing.JFrame) {
+                javax.swing.JFrame frame = (javax.swing.JFrame) window;
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(new DoctorDashboard());
+                frame.revalidate();
+                frame.repaint();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error navigating back: " + e.getMessage());
+        }
     }
 
     /**
@@ -53,10 +191,6 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtAreaClinicalSummanry = new javax.swing.JTextArea();
-        jLabel12 = new javax.swing.JLabel();
-        btmChooseFiles = new javax.swing.JButton();
-        jLabel13 = new javax.swing.JLabel();
-        btnSelected = new javax.swing.JButton();
         btnSubmitReferal = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
@@ -74,6 +208,11 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         btnBack.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnBack.setForeground(new java.awt.Color(13, 115, 119));
         btnBack.setText("BACK");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -84,7 +223,7 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 378, Short.MAX_VALUE)
                 .addComponent(btnBack)
                 .addGap(64, 64, 64))
         );
@@ -164,11 +303,9 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
 
         comboBoxPreferredSpec.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         comboBoxPreferredSpec.setForeground(new java.awt.Color(13, 115, 119));
-        comboBoxPreferredSpec.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         comboBoxPreferredSpec2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         comboBoxPreferredSpec2.setForeground(new java.awt.Color(13, 115, 119));
-        comboBoxPreferredSpec2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jCheckBox1.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jCheckBox1.setForeground(new java.awt.Color(13, 115, 119));
@@ -181,6 +318,11 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         jCheckBox2.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jCheckBox2.setForeground(new java.awt.Color(13, 115, 119));
         jCheckBox2.setText("Routine");
+        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox2ActionPerformed(evt);
+            }
+        });
 
         jCheckBox3.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jCheckBox3.setForeground(new java.awt.Color(13, 115, 119));
@@ -194,6 +336,11 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         jCheckBox4.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jCheckBox4.setForeground(new java.awt.Color(13, 115, 119));
         jCheckBox4.setText("Emergency");
+        jCheckBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox4ActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(13, 115, 119));
@@ -213,18 +360,6 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         txtAreaClinicalSummanry.setRows(5);
         jScrollPane2.setViewportView(txtAreaClinicalSummanry);
 
-        jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(13, 115, 119));
-        jLabel12.setText("ATTACH DOCUMENTS");
-
-        btmChooseFiles.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        btmChooseFiles.setForeground(new java.awt.Color(13, 115, 119));
-        btmChooseFiles.setText("CHOOSE FILES");
-
-        jLabel13.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(13, 115, 119));
-        jLabel13.setText("SELECTED");
-
         btnSubmitReferal.setBackground(new java.awt.Color(13, 115, 119));
         btnSubmitReferal.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnSubmitReferal.setForeground(new java.awt.Color(232, 244, 248));
@@ -239,6 +374,11 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
         btnCancel.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnCancel.setForeground(new java.awt.Color(232, 244, 248));
         btnCancel.setText("CANCEL");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -280,21 +420,14 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                             .addComponent(jLabel11)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addGap(18, 18, 18)
-                                .addComponent(btmChooseFiles)
-                                .addGap(85, 85, 85)
-                                .addComponent(jLabel13)
-                                .addGap(26, 26, 26)
-                                .addComponent(btnSelected))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(178, 178, 178)
-                                .addComponent(btnSubmitReferal)
-                                .addGap(67, 67, 67)
-                                .addComponent(btnCancel)))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(154, 154, 154)
+                .addComponent(btnSubmitReferal)
+                .addGap(105, 105, 105)
+                .addComponent(btnCancel)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,33 +463,97 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(btmChooseFiles)
-                    .addComponent(jLabel13)
-                    .addComponent(btnSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSubmitReferal)
                     .addComponent(btnCancel))
-                .addGap(28, 28, 28))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
-        // TODO add your handling code here:
+        updateUrgencyCheckboxes(jCheckBox3);
     }//GEN-LAST:event_jCheckBox3ActionPerformed
 
     private void btnSubmitReferalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitReferalActionPerformed
-        // TODO add your handling code here:
+        String specialtyRequired = (String) ComboBoxSpecialityRequires.getSelectedItem();
+        String referralReason = txtAreaReferral.getText().trim();
+        String clinicalSummary = txtAreaClinicalSummanry.getText().trim();
+
+        if (ValidationUtil.isEmpty(specialtyRequired)) {
+            JOptionPane.showMessageDialog(this, "Please select specialty required", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (ValidationUtil.isEmpty(referralReason)) {
+            JOptionPane.showMessageDialog(this, "Please enter reason for referral", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (ValidationUtil.isEmpty(clinicalSummary)) {
+            JOptionPane.showMessageDialog(this, "Please enter clinical summary", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Get urgency
+        String urgency = getSelectedUrgency();
+
+        // Create full referral reason
+        String fullReason = referralReason + "\n\nClinical Summary: " + clinicalSummary
+                + "\n\nUrgency: " + urgency
+                + "\n\nSpecialty: " + specialtyRequired;
+
+        // Get specialist ID (if not "any available")
+        Integer specialistID = null;
+        if (!jCheckBox1.isSelected()) {
+            // For now, set to null (in production, get from combobox selection)
+            specialistID = null;
+        }
+
+        // Create referral
+        SpecialistReferral referral = doctorService.referToSpecialist(diagnosisID, fullReason, specialistID);
+
+        if (referral != null) {
+            JOptionPane.showMessageDialog(this,
+                    "Referral submitted successfully!\n\n"
+                    + "Referral ID: R" + referral.getReferralID() + "\n"
+                    + "Specialty: " + specialtyRequired + "\n"
+                    + "Urgency: " + urgency,
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            navigateBackToDashboard();
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to submit referral", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnSubmitReferalActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        navigateBackToDashboard();
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+        updateUrgencyCheckboxes(jCheckBox2);
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
+
+    private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
+        updateUrgencyCheckboxes(jCheckBox4);
+    }//GEN-LAST:event_jCheckBox4ActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Cancel referral? Unsaved data will be lost.",
+                "Confirm",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            navigateBackToDashboard();
+        }
+    }//GEN-LAST:event_btnCancelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ComboBoxSpecialityRequires;
-    private javax.swing.JButton btmChooseFiles;
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnCancel;
-    private javax.swing.JButton btnSelected;
     private javax.swing.JButton btnSubmitReferal;
     private javax.swing.JComboBox<String> comboBoxPreferredSpec;
     private javax.swing.JComboBox<String> comboBoxPreferredSpec2;
@@ -369,8 +566,6 @@ public class ReferSpecialistPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
