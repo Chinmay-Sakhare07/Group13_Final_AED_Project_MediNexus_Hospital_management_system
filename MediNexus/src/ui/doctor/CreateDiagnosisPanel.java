@@ -4,17 +4,122 @@
  */
 package ui.doctor;
 
+import dao.*;
+import model.*;
+import services.*;
+import session.UserSession;
+import util.DateUtil;
+import util.ValidationUtil;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author pranjalpatil
  */
 public class CreateDiagnosisPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form CreateDiagnosisPanel
-     */
-    public CreateDiagnosisPanel() {
+    private DoctorService doctorService;
+    private AssessmentDAO assessmentDAO;
+    private ComplaintDAO complaintDAO;
+    private PatientDAO patientDAO;
+    private int assessmentID;
+    private Assessment currentAssessment;
+
+    public CreateDiagnosisPanel(int assessmentID) {
+        this.assessmentID = assessmentID;
         initComponents();
+
+        this.doctorService = new DoctorService();
+        this.assessmentDAO = new AssessmentDAO();
+        this.complaintDAO = new ComplaintDAO();
+        this.patientDAO = new PatientDAO();
+
+        loadAssessmentInfo();
+    }
+
+    // Load assessment information
+    private void loadAssessmentInfo() {
+        try {
+            // Get assessment
+            currentAssessment = assessmentDAO.getAssessmentByID(assessmentID);
+
+            if (currentAssessment == null) {
+                JOptionPane.showMessageDialog(this, "Assessment not found", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Get complaint
+            Complaint complaint = complaintDAO.getComplaintByID(currentAssessment.getComplaintID());
+
+            if (complaint != null) {
+                fieldComplaint.setText("C" + complaint.getComplaintID());
+                fieldComplaint.setEditable(false);
+
+                // Get patient
+                Patient patient = patientDAO.getPatientByID(complaint.getPatientID());
+
+                if (patient != null) {
+                    fieldPatient.setText(patient.getFullName());
+                    fieldPatient.setEditable(false);
+                }
+            }
+
+            // Set date
+            fieldDate.setText(DateUtil.getCurrentDate());
+            fieldDate.setEditable(false);
+
+            // Set assessment summary
+            fieldAssesment.setText(currentAssessment.getSymptoms());
+            fieldAssesment.setEditable(false);
+
+        } catch (Exception e) {
+            System.err.println("Error loading assessment: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Get selected severity
+    private String getSelectedSeverity() {
+        if (cbMild.isSelected()) {
+            return "MILD";
+        }
+        if (cbModerate.isSelected()) {
+            return "MODERATE";
+        }
+        if (cbSevere.isSelected()) {
+            return "SEVERE";
+        }
+        if (cbLifeThreat.isSelected()) {
+            return "LIFE_THREATENING";
+        }
+        return "";
+    }
+
+    // Ensure only one severity checkbox is selected
+    private void updateSeverityCheckboxes(javax.swing.JCheckBox selected) {
+        cbMild.setSelected(false);
+        cbModerate.setSelected(false);
+        cbSevere.setSelected(false);
+        cbLifeThreat.setSelected(false);
+        selected.setSelected(true);
+    }
+
+    // Navigate back to dashboard
+    private void navigateBackToDashboard() {
+        try {
+            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            if (window instanceof javax.swing.JFrame) {
+                javax.swing.JFrame frame = (javax.swing.JFrame) window;
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(new DoctorDashboard());
+                frame.revalidate();
+                frame.repaint();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error navigating back: " + e.getMessage());
+        }
     }
 
     /**
@@ -78,6 +183,11 @@ public class CreateDiagnosisPanel extends javax.swing.JPanel {
         btnBack.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnBack.setForeground(new java.awt.Color(13, 115, 119));
         btnBack.setText("BACK");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -185,6 +295,11 @@ public class CreateDiagnosisPanel extends javax.swing.JPanel {
         btnSearch.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnSearch.setForeground(new java.awt.Color(13, 115, 119));
         btnSearch.setText("SEARCH");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(13, 115, 119));
@@ -197,18 +312,38 @@ public class CreateDiagnosisPanel extends javax.swing.JPanel {
         cbMild.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         cbMild.setForeground(new java.awt.Color(13, 115, 119));
         cbMild.setText("MILD");
+        cbMild.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMildActionPerformed(evt);
+            }
+        });
 
         cbModerate.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         cbModerate.setForeground(new java.awt.Color(13, 115, 119));
         cbModerate.setText("MODERATE");
+        cbModerate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbModerateActionPerformed(evt);
+            }
+        });
 
         cbSevere.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         cbSevere.setForeground(new java.awt.Color(13, 115, 119));
         cbSevere.setText("SEVERE");
+        cbSevere.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbSevereActionPerformed(evt);
+            }
+        });
 
         cbLifeThreat.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         cbLifeThreat.setForeground(new java.awt.Color(13, 115, 119));
         cbLifeThreat.setText("LIFE THREATNING");
+        cbLifeThreat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbLifeThreatActionPerformed(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(13, 115, 119));
@@ -244,16 +379,31 @@ public class CreateDiagnosisPanel extends javax.swing.JPanel {
         btnSaveDiagnosis.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnSaveDiagnosis.setForeground(new java.awt.Color(232, 244, 248));
         btnSaveDiagnosis.setText("SAVE DIAGNOSIS");
+        btnSaveDiagnosis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveDiagnosisActionPerformed(evt);
+            }
+        });
 
         btnCreateTreatment.setBackground(new java.awt.Color(13, 115, 119));
         btnCreateTreatment.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnCreateTreatment.setForeground(new java.awt.Color(232, 244, 248));
         btnCreateTreatment.setText("CREATE TREATMENT");
+        btnCreateTreatment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateTreatmentActionPerformed(evt);
+            }
+        });
 
         btnReferSpeac.setBackground(new java.awt.Color(13, 115, 119));
         btnReferSpeac.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnReferSpeac.setForeground(new java.awt.Color(232, 244, 248));
         btnReferSpeac.setText("REFER SPECIALIST");
+        btnReferSpeac.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReferSpeacActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -370,6 +520,163 @@ public class CreateDiagnosisPanel extends javax.swing.JPanel {
                 .addGap(0, 20, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        navigateBackToDashboard();
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void cbMildActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMildActionPerformed
+        updateSeverityCheckboxes(cbMild);
+    }//GEN-LAST:event_cbMildActionPerformed
+
+    private void cbModerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbModerateActionPerformed
+        updateSeverityCheckboxes(cbModerate);
+    }//GEN-LAST:event_cbModerateActionPerformed
+
+    private void cbSevereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSevereActionPerformed
+        updateSeverityCheckboxes(cbSevere);
+    }//GEN-LAST:event_cbSevereActionPerformed
+
+    private void cbLifeThreatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLifeThreatActionPerformed
+        updateSeverityCheckboxes(cbLifeThreat);
+    }//GEN-LAST:event_cbLifeThreatActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        JOptionPane.showMessageDialog(this,
+                "ICD Code Search\n\n(Feature not implemented - enter code manually)",
+                "Search",
+                JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnSaveDiagnosisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveDiagnosisActionPerformed
+        String diagnosisCode = fieldDiagnosisCode.getText().trim();
+        String diagnosisName = fieldDiagnosisName.getText().trim();
+        String description = fieldDescription.getText().trim();
+        String severity = getSelectedSeverity();
+
+        if (ValidationUtil.isEmpty(diagnosisName)) {
+            JOptionPane.showMessageDialog(this, "Please enter diagnosis name", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (ValidationUtil.isEmpty(severity)) {
+            JOptionPane.showMessageDialog(this, "Please select severity", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (ValidationUtil.isEmpty(description)) {
+            JOptionPane.showMessageDialog(this, "Please enter description", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Create diagnosis
+        Diagnosis diagnosis = doctorService.createDiagnosis(
+                assessmentID,
+                diagnosisCode,
+                diagnosisName,
+                description,
+                severity
+        );
+
+        if (diagnosis != null) {
+            JOptionPane.showMessageDialog(this,
+                    "Diagnosis saved successfully!\n\nDiagnosis ID: D" + diagnosis.getDiagnosisID(),
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+            navigateBackToDashboard();
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to save diagnosis", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSaveDiagnosisActionPerformed
+
+    private void btnCreateTreatmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateTreatmentActionPerformed
+        String diagnosisName = fieldDiagnosisName.getText().trim();
+        String description = fieldDescription.getText().trim();
+        String severity = getSelectedSeverity();
+        String treatmentPlan = fieldTreatment.getText().trim();
+
+        if (ValidationUtil.isEmpty(diagnosisName) || ValidationUtil.isEmpty(severity) || ValidationUtil.isEmpty(description)) {
+            JOptionPane.showMessageDialog(this, "Please complete diagnosis information first", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (ValidationUtil.isEmpty(treatmentPlan)) {
+            JOptionPane.showMessageDialog(this, "Please enter treatment recommendation", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Create diagnosis
+        String diagnosisCode = fieldDiagnosisCode.getText().trim();
+        Diagnosis diagnosis = doctorService.createDiagnosis(assessmentID, diagnosisCode, diagnosisName, description, severity);
+
+        if (diagnosis != null) {
+            // Create treatment
+            Treatment treatment = doctorService.createTreatment(
+                    diagnosis.getDiagnosisID(),
+                    treatmentPlan,
+                    "",
+                    "",
+                    null
+            );
+
+            if (treatment != null) {
+                JOptionPane.showMessageDialog(this,
+                        "Diagnosis and Treatment created successfully!\n\n"
+                        + "Diagnosis ID: D" + diagnosis.getDiagnosisID() + "\n"
+                        + "Treatment ID: T" + treatment.getTreatmentID(),
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+                navigateBackToDashboard();
+            } else {
+                JOptionPane.showMessageDialog(this, "Diagnosis saved but treatment creation failed", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to save diagnosis", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnCreateTreatmentActionPerformed
+
+    private void btnReferSpeacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReferSpeacActionPerformed
+        if (!cbRequirement.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Please check 'Requires Specialist Consultation' first", "Info", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Validate diagnosis is created
+        String diagnosisName = fieldDiagnosisName.getText().trim();
+        String description = fieldDescription.getText().trim();
+        String severity = getSelectedSeverity();
+
+        if (ValidationUtil.isEmpty(diagnosisName) || ValidationUtil.isEmpty(severity)) {
+            JOptionPane.showMessageDialog(this, "Please complete diagnosis information first", "Validation", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Create diagnosis first
+        String diagnosisCode = fieldDiagnosisCode.getText().trim();
+        Diagnosis diagnosis = doctorService.createDiagnosis(assessmentID, diagnosisCode, diagnosisName, description, severity);
+
+        if (diagnosis != null) {
+            // Navigate to refer specialist panel
+            try {
+                java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+                if (window instanceof javax.swing.JFrame) {
+                    javax.swing.JFrame frame = (javax.swing.JFrame) window;
+                    frame.getContentPane().removeAll();
+                    frame.getContentPane().add(new ReferSpecialistPanel(diagnosis.getDiagnosisID()));
+                    frame.revalidate();
+                    frame.repaint();
+                }
+
+            } catch (Exception e) {
+                System.err.println("Error navigating to referral: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to save diagnosis", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnReferSpeacActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

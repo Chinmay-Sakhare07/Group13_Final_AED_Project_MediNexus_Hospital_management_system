@@ -8,13 +8,149 @@ package ui.doctor;
  *
  * @author pranjalpatil
  */
+import dao.ComplaintDAO;
+import dao.PatientDAO;
+import model.Complaint;
+import model.Employee;
+import model.Patient;
+import services.ComplaintService;
+import services.NotificationService;
+import session.UserSession;
+import util.DateUtil;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 public class DoctorDashboard extends javax.swing.JPanel {
 
     /**
      * Creates new form DoctorDashboard
      */
+    private ComplaintService complaintService;
+    private NotificationService notificationService;
+    private DefaultTableModel tableModel;
+    private Employee currentDoctor;
+
     public DoctorDashboard() {
         initComponents();
+        this.complaintService = new ComplaintService();
+        this.notificationService = new NotificationService();
+
+        this.currentDoctor = UserSession.getInstance().getCurrentEmployee();
+
+        setupTable();
+        loadDashboardData();
+    }
+
+    private void setupTable() {
+        this.tableModel = (DefaultTableModel) tblDoctorDashboard.getModel();
+        // Reset columns to ensure correct headers and structure
+        tableModel.setColumnIdentifiers(new Object[]{"ID", "PATIENT", "CATEGORY", "PRIORITY", "STATUS", "DATE"});
+    }
+
+    private void loadDashboardData() {
+        if (currentDoctor == null) {
+            // Handle case where session is invalid
+            JOptionPane.showMessageDialog(this, "Doctor session not found. Please re-login.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        loadDashboardSummary();
+        loadAssignedComplaints();
+        loadNotifications();
+    }
+
+    private void loadDashboardSummary() {
+        try {
+            // Get all complaints assigned to the current doctor
+            List<Complaint> assignedComplaints = complaintService.getAssignedComplaints();
+
+            if (assignedComplaints == null) {
+                return;
+            }
+
+            long pendingCount = assignedComplaints.stream()
+                    .filter(c -> c.getStatus().equals("ASSIGNED")) // New case ready for assessment
+                    .count();
+
+            long inProgressCount = assignedComplaints.stream()
+                    .filter(c -> c.getStatus().equals("IN_PROGRESS") || c.getStatus().equals("DIAGNOSED"))
+                    .count();
+
+            long completedCount = assignedComplaints.stream()
+                    .filter(c -> c.getStatus().equals("TREATED") || c.getStatus().equals("CLOSED"))
+                    .count();
+
+            // Update the JTextFields in the dashboard design
+            fieldPending.setText(String.valueOf(pendingCount));
+            fieldInProgress.setText(String.valueOf(inProgressCount));
+            fieldCompleted.setText(String.valueOf(completedCount));
+
+        } catch (Exception e) {
+            System.err.println("Error loading dashboard summary: " + e.getMessage());
+        }
+    }
+
+    private void loadAssignedComplaints() {
+        try {
+            tableModel.setRowCount(0); // Clear old data
+
+            // Get assigned complaints (from ComplaintService)
+            List<Complaint> complaints = complaintService.getAssignedComplaints();
+
+            if (complaints == null) {
+                return;
+            }
+
+            // Get a list of patient IDs to look up patient names efficiently
+            PatientDAO patientDAO = new PatientDAO();
+
+            for (Complaint c : complaints) {
+                // Lookup patient name (requires PatientDAO lookup)
+                Patient patient = patientDAO.getPatientByID(c.getPatientID());
+                String patientName = (patient != null) ? patient.getFullName() : "Unknown Patient";
+
+                // Add row to the table
+                tableModel.addRow(new Object[]{
+                    "C" + c.getComplaintID(),
+                    patientName,
+                    c.getCategory(),
+                    c.getPriority(),
+                    c.getStatus(),
+                    DateUtil.formatDateTime(c.getCreatedDate())
+                });
+            }
+            System.out.println("Loaded " + complaints.size() + " assigned complaints for Dr. " + currentDoctor.getFullName());
+
+        } catch (Exception e) {
+            System.err.println("Error loading assigned complaints: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void loadNotifications() {
+        try {
+            // Notifications are generally loaded by UserID, which is linked to the Employee
+            List<model.Notification> notifications = notificationService.getUnreadNotifications();
+
+            if (notifications == null || notifications.isEmpty()) {
+                fieldRecentNotifications1.setText("No new alerts or messages.");
+                fieldRecentNotifications2.setText("");
+                return;
+            }
+
+            // Display the top two unread notifications in the fields
+            fieldRecentNotifications1.setText("1. " + notifications.get(0).getMessage());
+
+            if (notifications.size() > 1) {
+                fieldRecentNotifications2.setText("2. " + notifications.get(1).getMessage());
+            } else {
+                fieldRecentNotifications2.setText("");
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error loading doctor notifications: " + e.getMessage());
+        }
     }
 
     /**
@@ -62,6 +198,11 @@ public class DoctorDashboard extends javax.swing.JPanel {
         btnBack.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnBack.setForeground(new java.awt.Color(13, 115, 119));
         btnBack.setText("BACK");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -127,11 +268,21 @@ public class DoctorDashboard extends javax.swing.JPanel {
         btnViewAllComplaints.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         btnViewAllComplaints.setForeground(new java.awt.Color(232, 244, 248));
         btnViewAllComplaints.setText("VIEW ALL COMPLAINTS");
+        btnViewAllComplaints.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewAllComplaintsActionPerformed(evt);
+            }
+        });
 
         lblCreateAssesment.setBackground(new java.awt.Color(13, 115, 119));
         lblCreateAssesment.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
         lblCreateAssesment.setForeground(new java.awt.Color(232, 244, 248));
         lblCreateAssesment.setText("CREATE ASSESMENT");
+        lblCreateAssesment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lblCreateAssesmentActionPerformed(evt);
+            }
+        });
 
         btnReferSpecialist.setBackground(new java.awt.Color(13, 115, 119));
         btnReferSpecialist.setFont(new java.awt.Font("Helvetica Neue", 1, 13)); // NOI18N
@@ -240,9 +391,53 @@ public class DoctorDashboard extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReferSpecialistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReferSpecialistActionPerformed
-        // TODO add your handling code here:
+        //switchPanel(new ReferSpecialistPanel(diagnosis.getDiagnosisID()));
     }//GEN-LAST:event_btnReferSpecialistActionPerformed
 
+    private void lblCreateAssesmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblCreateAssesmentActionPerformed
+        int selectedRow = tblDoctorDashboard.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a complaint from the table to create an assessment.", "Selection Required", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String complaintIDStr = (String) tableModel.getValueAt(selectedRow, 0);
+        int complaintID = Integer.parseInt(complaintIDStr.substring(1));
+
+        switchPanel(new CreateAssessmentPanel(complaintID));
+    }//GEN-LAST:event_lblCreateAssesmentActionPerformed
+
+    private void btnViewAllComplaintsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAllComplaintsActionPerformed
+        switchPanel(new ViewAssignedComplaintsPanel());
+    }//GEN-LAST:event_btnViewAllComplaintsActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to logout?",
+                "Logout",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            UserSession.getInstance().clearSession();
+            // Assume closing the current frame opens the LoginJFrame_Main
+            java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+            if (window != null) {
+                window.dispose();
+                // Optional: Re-launch Login frame (assuming you have one, or rely on application closure)
+            }
+        }
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void switchPanel(javax.swing.JPanel newPanel) {
+        java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+        if (window instanceof javax.swing.JFrame) {
+            javax.swing.JFrame frame = (javax.swing.JFrame) window;
+            frame.getContentPane().removeAll();
+            frame.getContentPane().add(newPanel);
+            frame.revalidate();
+            frame.repaint();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
